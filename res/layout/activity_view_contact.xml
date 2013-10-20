@@ -1,0 +1,66 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ViewContact" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <ImageView
+            android:id="@+id/view_contact_photo"
+            android:paddingTop="5dp"
+            android:layout_width="172dp"
+            android:layout_height="168dp"
+            android:src="@drawable/dummyphoto" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical" >
+            
+            <TextView
+            android:id="@+id/view_contact_firstname"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="5dp"
+            android:textSize="30sp"
+            android:textColor="#3EBF37" />
+            <TextView
+            android:id="@+id/view_contact_lastname"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:textSize="30sp"
+			android:textColor="#3EBF37" />
+            
+        </LinearLayout>
+        
+    </LinearLayout>
+	<TextView
+	    android:text="@string/view_contact_homephone"
+	    style="@style/TextViewHeadingStyle" />
+        	
+	<TextView
+	    android:id="@+id/view_contact_homephone"
+	    style="@style/TextViewViewContactStyle" />
+	
+	<TextView
+	    android:text="@string/view_contact_mobilephone"
+	    style="@style/TextViewHeadingStyle" />
+        	
+	<TextView
+	    android:id="@+id/view_contact_mobilephone"
+	    style="@style/TextViewViewContactStyle" />
+	
+	<TextView
+	    android:text="@string/view_contact_workphone"
+	    style="@style/TextViewHeadingStyle" />
+        	
+	<TextView
+	    android:id="@+id/view_contact_workphone"
+	    style="@style/TextViewViewContactStyle" />
+	
+</LinearLayout>
