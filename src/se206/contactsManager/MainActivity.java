@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -14,6 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.CursorAdapter;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -22,15 +25,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends Activity{
-
+	
 	private ListView contacts_listview;
-	private List<Contact> displayList;
+	private ContactsDatabaseHelper dbHelper;
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);        
         setContentView(R.layout.activity_main);
         
+        dbHelper = new ContactsDatabaseHelper(MainActivity.this);        
         contacts_listview = (ListView)findViewById(R.id.contacts_listview);    
         
         //Setup ListView which displays contacts
@@ -40,23 +44,18 @@ public class MainActivity extends Activity{
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.    	
-        getMenuInflater().inflate(R.menu.main, menu);
+        getMenuInflater().inflate(R.menu.main, menu);        
         return true;
     } 
       
-    private void setupContactListView(){
-    	displayList = new ArrayList<Contact>();
-    	displayList.add(new Contact("John", "Smith"));
-    	displayList.add(new Contact("John", "Smith"));
-    	displayList.add(new Contact("John", "Smith"));
-    	
-    	ListAdapter listAdapter = new CustomListAdapter();
+    private void setupContactListView(){ 	
+    	//ListAdapter listAdapter = new CustomListAdapter();
+    	CursorAdapter listAdapter = new CustomCursorAdapter(MainActivity.this, dbHelper.getAllData());
     	contacts_listview.setAdapter(listAdapter);
+
     	contacts_listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
     		public void onItemClick(AdapterView<?> parentView, View clickedView, int clickedViewPosition, long id){	    
-        		Contact selectedContact = displayList.get(clickedViewPosition);
-        		
-    	    	String displayString = "Yout clicked " + selectedContact;
+        		String displayString = "Yout clicked " + clickedViewPosition;
     	    	Toast.makeText(clickedView.getContext(), displayString, Toast.LENGTH_SHORT).show();
     	    	//Intent intent = new Intent(MainActivity.this, ViewContact.class);
     	    	//startActivity(intent);		
@@ -73,38 +72,31 @@ public class MainActivity extends Activity{
         }
         return super.onOptionsItemSelected(item);
     }
-
-    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    //Custom List adapter to adapt list of contacts to a graphical view.    
-    private class CustomListAdapter extends ArrayAdapter<Contact>{
-		CustomListAdapter(){
-			super(MainActivity.this, android.R.layout.simple_list_item_1, displayList);
+  
+    private class CustomCursorAdapter extends CursorAdapter{
+		public CustomCursorAdapter(Context context, Cursor c){
+			super(context, c);
 		}
 		
-		public View getView(int position, View convertView, ViewGroup parent){
+		private Context context;
+		
+		public View newView(Context context, Cursor cursor, ViewGroup parent){
 			
 			//Create a layout inflator to inflate our xml layout for each item in the list.			
-			LayoutInflater inflater = (LayoutInflater) MainActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			
 			//Inflate the list item layout. Keep a reference to the inflated view. Note there is no view root specified.
 			View listItemView = inflater.inflate(R.layout.custom_list_item_layout, null);
-			
+						
+			return listItemView;
+		}
+		
+		public void bindView(View view, Context context, Cursor cursor){
 			//Access the textview element inside the view.
-			TextView name = (TextView)listItemView.findViewById(R.id.contacts_listview_name);
+			TextView name = (TextView)view.findViewById(R.id.contacts_listview_name);
 			
 			//Set the text for each view.
-			name.setText(""+ displayList.get(position).getFirstName() + " " + displayList.get(position).getLastName());
-			
-			//Add image to view.
-			ImageView photo = (ImageView)listItemView.findViewById(R.id.contacts_listview_photo);			
-			Bitmap img = displayList.get(position).getPhoto(MainActivity.this);
-			photo.setImageBitmap(img);
-			
-			photo.setAdjustViewBounds(true);
-			photo.setMaxHeight(100);			
-			photo.setMaxWidth(100);
-			
-			return listItemView;
+			name.setText(cursor.getString(cursor.getColumnIndex(cursor.getColumnName(1))));
 		}
     }
 	
