@@ -14,9 +14,8 @@ public class Contact{
 	private int streetNumber;
 	private String streetName;
 	private String suburb;
-	private String city;
-	
-	//private String dateOfBirth;
+	private String city;	
+	private String dateOfBirth;
 	private Bitmap photo;
 	
 	public Contact(String firstName, String lastName){
