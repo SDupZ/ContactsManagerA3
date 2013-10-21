@@ -30,13 +30,20 @@ public class MainActivity extends Activity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);        
         setContentView(R.layout.activity_main);
-               
+        
         contacts_listview = (ListView)findViewById(R.id.contacts_listview);    
         
         //Setup ListView which displays contacts
         setupContactListView();
     }
-
+    
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.    	
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    } 
+      
     private void setupContactListView(){
     	displayList = new ArrayList<Contact>();
     	displayList.add(new Contact("John", "Smith"));
@@ -45,28 +52,18 @@ public class MainActivity extends Activity{
     	
     	ListAdapter listAdapter = new CustomListAdapter();
     	contacts_listview.setAdapter(listAdapter);
-    	contacts_listview.setOnItemClickListener(new ListItemClickedListener());  	
+    	contacts_listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+    		public void onItemClick(AdapterView<?> parentView, View clickedView, int clickedViewPosition, long id){	    
+        		Contact selectedContact = displayList.get(clickedViewPosition);
+        		
+    	    	String displayString = "Yout clicked " + selectedContact;
+    	    	Toast.makeText(clickedView.getContext(), displayString, Toast.LENGTH_SHORT).show();
+    	    	//Intent intent = new Intent(MainActivity.this, ViewContact.class);
+    	    	//startActivity(intent);		
+        	}    		
+    	});  	
     }
-    
-    class ListItemClickedListener implements AdapterView.OnItemClickListener {
-    	@Override
-    	public void onItemClick(AdapterView<?> parentView, View clickedView, int clickedViewPosition, long id){	    
-    		Contact selectedContact = displayList.get(clickedViewPosition);
-    		
-	    	String displayString = "Yout clicked " + selectedContact;
-	    	Toast.makeText(clickedView.getContext(), displayString, Toast.LENGTH_SHORT).show();
-	    	//Intent intent = new Intent(MainActivity.this, ViewContact.class);
-	    	//startActivity(intent);		
-    	} 
-    }
-    
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.    	
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }   
-      
+     
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     //Method to deal with the action bar add contact button
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -78,8 +75,7 @@ public class MainActivity extends Activity{
     }
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    //Custom List adapter to adapt list of contacts to a graphical view.
-    
+    //Custom List adapter to adapt list of contacts to a graphical view.    
     private class CustomListAdapter extends ArrayAdapter<Contact>{
 		CustomListAdapter(){
 			super(MainActivity.this, android.R.layout.simple_list_item_1, displayList);
