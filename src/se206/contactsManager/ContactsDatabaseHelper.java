@@ -61,11 +61,11 @@ public class ContactsDatabaseHelper extends SQLiteOpenHelper{
 		db.execSQL(CREATE_CONTACTS_TABLE);
 		
 		//Just testing purposes
-		final String FIRST_ENTRY = "INSERT INTO " + TABLE_NAME + " VALUES('test1', '1')";
+		final String FIRST_ENTRY = "INSERT INTO " + TABLE_NAME + " VALUES('Simon', 'du Preez')";
 		db.execSQL(FIRST_ENTRY);
-		final String SECOND_ENTRY = "INSERT INTO " + TABLE_NAME + " VALUES('test1', '2')";
+		final String SECOND_ENTRY = "INSERT INTO " + TABLE_NAME + " VALUES('John','Snow')";
 		db.execSQL(SECOND_ENTRY);
-		final String THIRD_ENTRY = "INSERT INTO " + TABLE_NAME + " VALUES('test1', '3')";
+		final String THIRD_ENTRY = "INSERT INTO " + TABLE_NAME + " VALUES('Nic', 'Cage')";
 		db.execSQL(THIRD_ENTRY);
 		
 	}

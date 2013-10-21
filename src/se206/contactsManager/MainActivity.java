@@ -95,8 +95,11 @@ public class MainActivity extends Activity{
 			//Access the textview element inside the view.
 			TextView name = (TextView)view.findViewById(R.id.contacts_listview_name);
 			
+			String text = "" 	+ cursor.getString(cursor.getColumnIndex(cursor.getColumnName(1))) + " "
+								+ cursor.getString(cursor.getColumnIndex(cursor.getColumnName(2)));
+			
 			//Set the text for each view.
-			name.setText(cursor.getString(cursor.getColumnIndex(cursor.getColumnName(1))));
+			name.setText(text);
 		}
     }
 	
