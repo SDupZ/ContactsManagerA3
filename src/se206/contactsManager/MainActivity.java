@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -93,10 +94,19 @@ public class MainActivity extends Activity{
 		public void bindView(View view, Context context, Cursor cursor){
 			
 			TextView name = (TextView)view.findViewById(R.id.contacts_listview_name);
+			ImageView photo = (ImageView)view.findViewById(R.id.contacts_listview_photo);
 			
 			String text = "" 	+ cursor.getString(cursor.getColumnIndex(cursor.getColumnName(ContactsDatabaseHelper.COLUMN_FIRSTNAME))) + " "
 								+ cursor.getString(cursor.getColumnIndex(cursor.getColumnName(ContactsDatabaseHelper.COLUMN_LASTNAME)));
+					
 			
+			Bitmap img = BitmapFactory.decodeResource(context.getResources(), R.drawable.dummyphoto);
+			photo.setImageBitmap(img);
+			
+			photo.setAdjustViewBounds(true);
+			photo.setMaxHeight(100);			
+			photo.setMaxWidth(100);
+
 			//Set the text for each view.
 			name.setText(text);
 		}
