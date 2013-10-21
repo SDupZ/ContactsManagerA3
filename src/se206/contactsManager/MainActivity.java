@@ -19,11 +19,12 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.AdapterView;
 import android.widget.TextView;
+import android.widget.Toast;
 
-public class MainActivity extends Activity implements AdapterView.OnItemClickListener {
+public class MainActivity extends Activity{
 
 	private ListView contacts_listview;
-	List<Contact> displayList;
+	private List<Contact> displayList;
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,22 +43,30 @@ public class MainActivity extends Activity implements AdapterView.OnItemClickLis
     	displayList.add(new Contact("John", "Smith"));
     	displayList.add(new Contact("John", "Smith"));
     	
-    	ListAdapter listAdapter = new CustomListAdapter(MainActivity.this,displayList);
+    	ListAdapter listAdapter = new CustomListAdapter();
     	contacts_listview.setAdapter(listAdapter);
-    	contacts_listview.setOnItemClickListener(this);  	
-    }
-  
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
+    	contacts_listview.setOnItemClickListener(new ListItemClickedListener());  	
     }
     
-    public void onItemClick(AdapterView<?> parentView, View clickedView, int clickedViewPosition, long id){
-		Intent intent = new Intent(MainActivity.this, ViewContact.class);
-		startActivity(intent);
-	}    
+    class ListItemClickedListener implements AdapterView.OnItemClickListener {
+    	@Override
+    	public void onItemClick(AdapterView<?> parentView, View clickedView, int clickedViewPosition, long id){	    
+    		Contact selectedContact = displayList.get(clickedViewPosition);
+    		
+	    	String displayString = "Yout clicked " + selectedContact;
+	    	Toast.makeText(clickedView.getContext(), displayString, Toast.LENGTH_SHORT).show();
+	    	//Intent intent = new Intent(MainActivity.this, ViewContact.class);
+	    	//startActivity(intent);		
+    	} 
+    }
+    
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.    	
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }   
+      
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     //Method to deal with the action bar add contact button
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -68,21 +77,18 @@ public class MainActivity extends Activity implements AdapterView.OnItemClickLis
         return super.onOptionsItemSelected(item);
     }
 
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    //Custom List adapter to adapt list of contacts to a graphical view.
+    
     private class CustomListAdapter extends ArrayAdapter<Contact>{
-		private Context context;
-		private List<Contact> contacts;
-		
-		CustomListAdapter(Context context, List<Contact> contacts){
-			super(context, android.R.layout.simple_list_item_1, contacts);
-			
-			this.context = context;
-			this.contacts = contacts;
+		CustomListAdapter(){
+			super(MainActivity.this, android.R.layout.simple_list_item_1, displayList);
 		}
 		
 		public View getView(int position, View convertView, ViewGroup parent){
 			
 			//Create a layout inflator to inflate our xml layout for each item in the list.			
-			LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			LayoutInflater inflater = (LayoutInflater) MainActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			
 			//Inflate the list item layout. Keep a reference to the inflated view. Note there is no view root specified.
 			View listItemView = inflater.inflate(R.layout.custom_list_item_layout, null);
@@ -91,11 +97,11 @@ public class MainActivity extends Activity implements AdapterView.OnItemClickLis
 			TextView name = (TextView)listItemView.findViewById(R.id.contacts_listview_name);
 			
 			//Set the text for each view.
-			name.setText(""+ contacts.get(position).getFirstName() + " " + contacts.get(position).getLastName());
+			name.setText(""+ displayList.get(position).getFirstName() + " " + displayList.get(position).getLastName());
 			
 			//Add image to view.
 			ImageView photo = (ImageView)listItemView.findViewById(R.id.contacts_listview_photo);			
-			Bitmap img = contacts.get(position).getPhoto(MainActivity.this);
+			Bitmap img = displayList.get(position).getPhoto(MainActivity.this);
 			photo.setImageBitmap(img);
 			
 			photo.setAdjustViewBounds(true);

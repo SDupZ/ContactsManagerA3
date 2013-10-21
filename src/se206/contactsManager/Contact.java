@@ -48,4 +48,8 @@ public class Contact{
 		return photo;
 		//return this.photo
 	}
+	
+	public String toString(){
+		return "" + firstName + " " + lastName;
+	}
 }
