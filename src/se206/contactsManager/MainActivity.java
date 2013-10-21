@@ -25,7 +25,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends Activity{
-	
 	private ListView contacts_listview;
 	private ContactsDatabaseHelper dbHelper;
 	
@@ -49,14 +48,14 @@ public class MainActivity extends Activity{
     } 
       
     private void setupContactListView(){ 	
-    	//ListAdapter listAdapter = new CustomListAdapter();
     	CursorAdapter listAdapter = new CustomCursorAdapter(MainActivity.this, dbHelper.getAllData());
     	contacts_listview.setAdapter(listAdapter);
-
     	contacts_listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-    		public void onItemClick(AdapterView<?> parentView, View clickedView, int clickedViewPosition, long id){	    
-        		String displayString = "Yout clicked " + clickedViewPosition;
+    		public void onItemClick(AdapterView<?> parentView, View clickedView, int clickedViewPosition, long id){	   
+        		String displayString = "You clicked " + dbHelper.getContact(clickedViewPosition);
+        		
     	    	Toast.makeText(clickedView.getContext(), displayString, Toast.LENGTH_SHORT).show();
+        		
     	    	//Intent intent = new Intent(MainActivity.this, ViewContact.class);
     	    	//startActivity(intent);		
         	}    		
@@ -92,11 +91,11 @@ public class MainActivity extends Activity{
 		}
 		
 		public void bindView(View view, Context context, Cursor cursor){
-			//Access the textview element inside the view.
+			
 			TextView name = (TextView)view.findViewById(R.id.contacts_listview_name);
 			
-			String text = "" 	+ cursor.getString(cursor.getColumnIndex(cursor.getColumnName(1))) + " "
-								+ cursor.getString(cursor.getColumnIndex(cursor.getColumnName(2)));
+			String text = "" 	+ cursor.getString(cursor.getColumnIndex(cursor.getColumnName(ContactsDatabaseHelper.COLUMN_FIRSTNAME))) + " "
+								+ cursor.getString(cursor.getColumnIndex(cursor.getColumnName(ContactsDatabaseHelper.COLUMN_LASTNAME)));
 			
 			//Set the text for each view.
 			name.setText(text);
