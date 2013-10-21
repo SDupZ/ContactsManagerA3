@@ -30,7 +30,8 @@ public class MainActivity extends Activity implements AdapterView.OnItemClickLis
         super.onCreate(savedInstanceState);        
         setContentView(R.layout.activity_main);
                
-        contacts_listview = (ListView)findViewById(R.id.contacts_listview);                
+        contacts_listview = (ListView)findViewById(R.id.contacts_listview);    
+        
         //Setup ListView which displays contacts
         setupContactListView();
     }
@@ -54,9 +55,6 @@ public class MainActivity extends Activity implements AdapterView.OnItemClickLis
     }
     
     public void onItemClick(AdapterView<?> parentView, View clickedView, int clickedViewPosition, long id){
-		//String displayString = "You clicked item" + Integer.toString(clickedViewPosition);
-		//Toast.makeText(clickedView.getContext(), displayString, Toast.LENGTH_SHORT).show();
-		
 		Intent intent = new Intent(MainActivity.this, ViewContact.class);
 		startActivity(intent);
 	}    
@@ -82,15 +80,24 @@ public class MainActivity extends Activity implements AdapterView.OnItemClickLis
 		}
 		
 		public View getView(int position, View convertView, ViewGroup parent){
+			
+			//Create a layout inflator to inflate our xml layout for each item in the list.			
 			LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			
+			//Inflate the list item layout. Keep a reference to the inflated view. Note there is no view root specified.
 			View listItemView = inflater.inflate(R.layout.custom_list_item_layout, null);
 			
+			//Access the textview element inside the view.
 			TextView name = (TextView)listItemView.findViewById(R.id.contacts_listview_name);
+			
+			//Set the text for each view.
 			name.setText(""+ contacts.get(position).getFirstName() + " " + contacts.get(position).getLastName());
 			
+			//Add image to view.
 			ImageView photo = (ImageView)listItemView.findViewById(R.id.contacts_listview_photo);			
 			Bitmap img = contacts.get(position).getPhoto(MainActivity.this);
 			photo.setImageBitmap(img);
+			
 			photo.setAdjustViewBounds(true);
 			photo.setMaxHeight(100);			
 			photo.setMaxWidth(100);
