@@ -76,7 +76,6 @@ public class EditContact extends Activity implements OnClickListener{
 			};
 		String[] fieldValues = {"\"First Name\"", "\"Last Name\"", "\"Mobile Phone\"", "\"Home Phone\"", "\"Work Phone\"", "\"Email Address\"",
 				"\"Address (Line 1)\"", "\"Address (Line 2)\"", "\"City\"", "\"Country\"", "\"Date of Birth\""};
-		Log.d("YOU", "First");
 		for( int i = 0; i< editTextFields.length; i++){
 			String hint = "";
 			if (contactDetails[i] == null){				
@@ -89,11 +88,19 @@ public class EditContact extends Activity implements OnClickListener{
 	}
 	
 	public boolean onOptionsItemSelected(MenuItem item) {
-		Contact updatedContact = new Contact(
-				firstName.getText().toString(),lastName.getText().toString(),mobilePhone.getText().toString(),
-				homePhone.getText().toString(), workPhone.getText().toString(), emailAddress.getText().toString(), 
-				addressLine1.getText().toString(), addressLine2.getText().toString(), city.getText().toString(), 
-				country.getText().toString(), dateOfBirth.getText().toString());
+		String f1 	= (firstName.getText().toString().equals("") 	== true) 	? null :	firstName.getText().toString();
+		String f2 	= (lastName.getText().toString().equals("") 	== true) 	? null :	lastName.getText().toString();
+		String f3	= (mobilePhone.getText().toString().equals("") 	== true) 	? null :	mobilePhone.getText().toString();
+		String f4 	= (homePhone.getText().toString().equals("") 	== true) 	? null :	homePhone.getText().toString();  
+		String f5 	= (workPhone.getText().toString().equals("") 	== true) 	? null :	workPhone.getText().toString();  
+		String f6 	= (emailAddress.getText().toString().equals("") == true) 	? null :	emailAddress.getText().toString();  
+		String f7 	= (addressLine1.getText().toString().equals("") == true) 	? null :	addressLine1.getText().toString();  
+		String f8 	= (addressLine2.getText().toString().equals("") == true) 	? null :	addressLine2.getText().toString();  
+		String f9 	= (city.getText().toString().equals("") 		== true) 	? null :	city.getText().toString();  
+		String f10	= (country.getText().toString().equals("") 		== true) 	? null :	country.getText().toString();  
+		String f11	= (dateOfBirth.getText().toString().equals("")	== true) 	? null :	dateOfBirth.getText().toString();  
+
+		Contact updatedContact = new Contact(f1,f2,f3,f4,f5,f6,f7,f8,f9,f10,f11);
 		
 		dbHelper.updateData(updatedContact, rowNumber);
 		

@@ -99,7 +99,7 @@ public class ContactsDatabaseHelper extends SQLiteOpenHelper{
 					rows.getString(7),rows.getString(8),rows.getString(9),rows.getString(10));
 		}
 		
-		db.close();
+		db.close();		
 		return contact;
 	}
 	@Override
@@ -131,7 +131,6 @@ public class ContactsDatabaseHelper extends SQLiteOpenHelper{
 	
 	public void updateData(Contact contact, int rowNumber){
 		ContentValues contentValues = getContentValues(contact);
-		int numRowsChanged = this.getWritableDatabase().update(ContactsDatabaseHelper.TABLE_NAME, contentValues,
-				"=" + rowNumber, null);
+		this.getWritableDatabase().update(ContactsDatabaseHelper.TABLE_NAME, contentValues,"rowid == " + rowNumber, null);
 	}
 }                                                
