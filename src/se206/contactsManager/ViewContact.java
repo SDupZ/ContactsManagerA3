@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 public class ViewContact extends Activity {
 	private ContactsDatabaseHelper dbHelper;
+	private Contact viewContact;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -20,7 +21,7 @@ public class ViewContact extends Activity {
 		
 		dbHelper = ContactsDatabaseHelper.getHelper(ViewContact.this); 
 		int clickedViewPosition = (Integer)this.getIntent().getExtras().get("clickedViewPosition");
-		Contact viewContact = dbHelper.getContact(clickedViewPosition);
+		viewContact = dbHelper.getContact(clickedViewPosition);
 		
 		TextView viewContactFirstname = (TextView)findViewById(R.id.view_contact_firstname);
 		TextView viewContactLastname = (TextView)findViewById(R.id.view_contact_lastname);
@@ -39,6 +40,7 @@ public class ViewContact extends Activity {
         // Handle presses on the action bar items
         if (item.getItemId() == R.id.edit_contact_button){        
         	Intent intent = new Intent(ViewContact.this, EditContact.class);
+        	intent.putExtra("contact", viewContact);
 	    	startActivity(intent);		    	
         }else if (item.getItemId() == R.id.delete_contact_button){
         	AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(ViewContact.this);

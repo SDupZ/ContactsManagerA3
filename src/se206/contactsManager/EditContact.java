@@ -13,11 +13,13 @@ import android.widget.EditText;
 
 public class EditContact extends Activity implements OnClickListener{
 	ImageView photo;
+	Contact editContact;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
+		editContact = (Contact) this.getIntent().getExtras().get("contact");		
 		setContentView(R.layout.activity_edit_contact);
 		
 		photo = (ImageView)findViewById(R.id.edit_contact_image_view);
@@ -25,9 +27,9 @@ public class EditContact extends Activity implements OnClickListener{
 		EditText temp;
 		
 		temp = (EditText)findViewById(R.id.edit_first_name);
-		temp.setHint("First Name Here");
+		temp.setHint(editContact.getFirstName());
 		temp = (EditText)findViewById(R.id.edit_last_name);
-		temp.setHint("Last Name Here");
+		temp.setHint(editContact.getLastName());
 	}
 	
 	public boolean onOptionsItemSelected(MenuItem item) {
