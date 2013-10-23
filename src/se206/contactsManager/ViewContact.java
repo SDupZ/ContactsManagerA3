@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
@@ -36,7 +37,9 @@ public class ViewContact extends Activity {
 	}
 	public boolean onOptionsItemSelected(MenuItem item) {
         // Handle presses on the action bar items
-        if (item.getItemId() == R.id.edit_contact_button){        	   	
+        if (item.getItemId() == R.id.edit_contact_button){        
+        	Intent intent = new Intent(ViewContact.this, EditContact.class);
+	    	startActivity(intent);		    	
         }else if (item.getItemId() == R.id.delete_contact_button){
         	AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(ViewContact.this);
         	

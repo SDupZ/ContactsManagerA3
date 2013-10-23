@@ -22,5 +22,6 @@
     <string name="view_contact_workphone">Work Phone</string>
     <string name="view_contact_mobilephone">Mobile Phone</string>
     <string name="back_contact">Back</string>
+    <string name="title_activity_edit_contact">EditContact</string>
 
 </resources>

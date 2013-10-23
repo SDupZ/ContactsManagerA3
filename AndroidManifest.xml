@@ -34,6 +34,10 @@
             android:name="se206.contactsManager.MainActivityasdf"
             android:label="@string/title_activity_main_activityasdf" >
         </activity>
+        <activity
+            android:name="se206.contactsManager.EditContact"
+            android:label="@string/title_activity_edit_contact" >
+        </activity>
     </application>
 
 </manifest>
