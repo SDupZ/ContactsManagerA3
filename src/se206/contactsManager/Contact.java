@@ -24,7 +24,7 @@ public class Contact implements Parcelable {
 	 * @param lastName
 	 * @param mobilePhone
 	 * @param homePhone
-	 * @param workPhoen
+	 * @param workPhone
 	 * @param emailAddress
 	 * @param addressLine1
 	 * @param addressLine2
@@ -32,10 +32,19 @@ public class Contact implements Parcelable {
 	 * @param country
 	 * @param dateOfBirth
 	 */
-	public Contact(String firstName, String lastName, String mobilePhone, String homePhone, String workPhoen, String emailAddress
+	public Contact(String firstName, String lastName, String mobilePhone, String homePhone, String workPhone, String emailAddress
 			, String addressLine1, String addressLine2, String city, String country, String dateOfBirth){
-		this.firstName = firstName;
-		this.lastName = lastName;
+		this.firstName    =   firstName;    
+		this.lastName     =   lastName;     
+		this.mobilePhone  =   mobilePhone;  
+		this.homePhone    =   homePhone;    
+		this.workPhone    =   workPhone;    
+		this.emailAddress =   emailAddress; 
+		this.addressLine1 =   addressLine1; 
+		this.addressLine2 =   addressLine2; 
+		this.city         =   city;         
+		this.country      =   country;      
+		this.dateOfBirth  =   dateOfBirth;  
 	}
 	
 	/**

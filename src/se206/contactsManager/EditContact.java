@@ -24,12 +24,59 @@ public class EditContact extends Activity implements OnClickListener{
 		
 		photo = (ImageView)findViewById(R.id.edit_contact_image_view);
 		photo.setOnClickListener(this);
-		EditText temp;
 		
-		temp = (EditText)findViewById(R.id.edit_first_name);
-		temp.setHint(editContact.getFirstName());
-		temp = (EditText)findViewById(R.id.edit_last_name);
-		temp.setHint(editContact.getLastName());
+		EditText 	firstName   	=  (EditText)findViewById(R.id.edit_first_name);
+		EditText  	lastName        =  (EditText)findViewById(R.id.edit_last_name);
+		EditText  	mobilePhone     =  (EditText)findViewById(R.id.edit_mobile_phone);
+		EditText  	homePhone       =  (EditText)findViewById(R.id.edit_home_phone);
+		EditText  	workPhone       =  (EditText)findViewById(R.id.edit_work_phone);
+		EditText  	emailAddress    =  (EditText)findViewById(R.id.edit_email_address);
+		EditText  	addressLine1    =  (EditText)findViewById(R.id.edit_addressline1);
+		EditText  	addressLine2    =  (EditText)findViewById(R.id.edit_addressline2);
+		EditText  	city            =  (EditText)findViewById(R.id.edit_city);
+		EditText  	country         =  (EditText)findViewById(R.id.edit_country);
+		EditText 	dateOfBirth 	=  (EditText)findViewById(R.id.edit_dateofbirth);
+		
+		EditText[] editTextFields = {				                
+				    firstName   ,
+				    lastName    ,
+				    mobilePhone ,
+				    homePhone   ,
+				    workPhone   ,
+				    emailAddress,
+				    addressLine1,
+				    addressLine2,
+				    city        ,
+				    country     ,
+				    dateOfBirth
+		};
+		
+		String[] contactDetails = 
+			{
+				editContact.getFirstName(),
+				editContact.getLastName(),
+				editContact.getMobilePhone(),
+				editContact.getHomePhone(),
+				editContact.getWorkPhone(),
+				editContact.getEmailAddress(),
+				editContact.getAddressLine1(),
+				editContact.getAddressLine2(),
+				editContact.getCity(),
+				editContact.getCountry(),
+				editContact.getDateOfBirth()
+			};
+		String[] fieldValues = {"\"First Name\"", "\"Last Name\"", "\"Mobile Phone\"", "\"Home Phone\"", "\"Work Phone\"", "\"Email Address\"",
+				"\"Address (Line 1)\"", "\"Address (Line 2)\"", "\"City\"", "\"Country\"", "\"Date of Birth\""};
+			
+		for( int i = 0; i< editTextFields.length; i++){
+			String hint = "";
+			if (contactDetails[i] == null){
+				hint = fieldValues[i];
+			}else{
+				hint = contactDetails[i];				
+			}
+			editTextFields[i].setHint(hint);
+		}
 	}
 	
 	public boolean onOptionsItemSelected(MenuItem item) {

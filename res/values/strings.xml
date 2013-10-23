@@ -12,7 +12,7 @@
     <string name="done_button">Done</string>
     <string name="title_activity_view_contact">ViewContact</string>
     <string name="hello_world">Hello world!</string>
-    <string name="edit_contact">Edit</string>
+    
     <string name="delete_contact">Delete</string>
     <string name="title_activity_main_activityasdf">MainActivityasdf</string>
     <string name="work_phone_hint">Work Phone</string>
@@ -21,7 +21,7 @@
     
     
     
-    <string name="back_contact">Back</string><string name="title_activity_edit_contact">EditContact</string><string name="view_contact_workphone">Work Phone</string><string name="view_contact_homephone">Home Phone</string><string name="view_contact_mobilephone">Mobile Phone</string>
+    <string name="back_contact">Back</string><string name="edit_contact">Edit</string><string name="title_activity_edit_contact">EditContact</string><string name="view_contact_workphone">Work Phone</string><string name="view_contact_homephone">Home Phone</string><string name="view_contact_mobilephone">Mobile Phone</string>
     
     <string name="view_contact_addressline1">Address (Line 1)</string>
     <string name="view_contact_addressline2">Address (Line 2)</string>
