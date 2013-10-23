@@ -4,7 +4,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.graphics.Bitmap;
 
 public class ContactsDatabaseHelper extends SQLiteOpenHelper{
 	private static ContactsDatabaseHelper instance;
@@ -84,17 +83,23 @@ public class ContactsDatabaseHelper extends SQLiteOpenHelper{
 		return this.getReadableDatabase().rawQuery(buildSQL, null);
 	}
 	
-	public String getContact(int rowNumber){
+	/**
+	 *  Will return null value if rowNumber given is invalid.
+	 * @param rowNumber
+	 * @return Contact
+	 */
+	public Contact getContact(int rowNumber){
 		SQLiteDatabase db = this.getReadableDatabase();
 		Cursor rows = db.rawQuery("SELECT * FROM " + TABLE_NAME, null);
 		
-		String test = "";
+		Contact contact = null;
 		if (rows.moveToPosition(rowNumber)){
-			test = 	rows.getString(0) + " " + rows.getString(1) + "\n";			
+			contact	= new Contact(rows.getString(0),rows.getString(1),rows.getString(2),rows.getString(3),rows.getString(4),rows.getString(5),rows.getString(6),
+					rows.getString(7),rows.getString(8),rows.getString(9),rows.getString(10));
 		}
 		
 		db.close();
-		return test;
+		return contact;
 	}
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion){

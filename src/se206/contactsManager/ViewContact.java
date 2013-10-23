@@ -19,18 +19,19 @@ public class ViewContact extends Activity {
 		
 		dbHelper = ContactsDatabaseHelper.getHelper(ViewContact.this); 
 		int clickedViewPosition = (Integer)this.getIntent().getExtras().get("clickedViewPosition");
+		Contact viewContact = dbHelper.getContact(clickedViewPosition);
 		
 		TextView viewContactFirstname = (TextView)findViewById(R.id.view_contact_firstname);
 		TextView viewContactLastname = (TextView)findViewById(R.id.view_contact_lastname);
 		TextView viewContactHomePhone = (TextView)findViewById(R.id.view_contact_homephone);
 		TextView viewContactMobilePhone = (TextView)findViewById(R.id.view_contact_mobilephone);
 		TextView viewContactWorkPhone = (TextView)findViewById(R.id.view_contact_workphone);
-		    	
-		viewContactFirstname.setText(dbHelper.getContact(clickedViewPosition));
-		viewContactLastname.setText("Smith");
-		viewContactHomePhone.setText("4799990");
-		viewContactMobilePhone.setText("021 111 1111");
-		viewContactWorkPhone.setText("123123123");
+		  
+		viewContactFirstname.setText(viewContact.getFirstName());
+		viewContactLastname.setText(viewContact.getLastName());
+		viewContactHomePhone.setText(viewContact.getHomePhone());
+		viewContactMobilePhone.setText(viewContact.getMobilePhone());
+		viewContactWorkPhone.setText(viewContact.getWorkPhone());
 		
 	}
 	public boolean onOptionsItemSelected(MenuItem item) {

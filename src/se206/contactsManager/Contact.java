@@ -1,9 +1,5 @@
 package se206.contactsManager;
 
-import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-
 public class Contact{
 	private String firstName;
 	private String lastName;
@@ -16,7 +12,7 @@ public class Contact{
 	private String city;
 	private String country;
 	private String dateOfBirth;
-	//private Bitmap photo;
+	//private String photo;
 	
 	public Contact(String firstName, String lastName, String mobilePhone, String homePhone, String workPhoen, String emailAddress
 			, String addressLine1, String addressLine2, String city, String country, String dateOfBirth){
@@ -39,16 +35,25 @@ public class Contact{
 	public String getHomePhone(){
 		return homePhone;
 	}
-	public String emailAddress(){
+	public String getEmailAddress(){
 		return emailAddress;
 	}
-	
-	public Bitmap getPhoto(Context context){
-		Bitmap photo = BitmapFactory.decodeResource(context.getResources(), R.drawable.dummyphoto);
-		return photo;
-		//return this.photo
+	public String getAddressLine1(){
+		return addressLine1;
 	}
-	
+	public String getAddressLine2(){
+		return addressLine2;
+	}
+	public String getCity(){
+		return city;
+	}
+	public String getCountry(){
+		return country;
+	}
+	public String getDateOfBirth(){
+		return dateOfBirth;
+	}	
+
 	public String toString(){
 		return "" + firstName + " " + lastName;
 	}
