@@ -21,6 +21,7 @@ import android.widget.TextView;
 public class MainActivity extends Activity{
 	private ListView contacts_listview;
 	private ContactsDatabaseHelper dbHelper;
+	private CursorAdapter listAdapter;
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,10 +41,18 @@ public class MainActivity extends Activity{
         getMenuInflater().inflate(R.menu.main, menu);        
         return true;
     } 
-      
+    
+    @Override
+    public void onResume(){
+    	super.onResume();
+    	if (listAdapter != null){
+    		listAdapter.changeCursor(dbHelper.getAllData());
+    		
+    	}
+    }
     private void setupContactListView(){ 	
-    	CursorAdapter listAdapter = new CustomCursorAdapter(MainActivity.this, dbHelper.getAllData());
-    	contacts_listview.setAdapter(listAdapter);
+    	listAdapter = new CustomCursorAdapter(MainActivity.this, dbHelper.getAllData());
+    	contacts_listview.setAdapter(listAdapter);    	
     	contacts_listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
     		public void onItemClick(AdapterView<?> parentView, View clickedView, int clickedViewPosition, long id){
     	    	Intent intent = new Intent(MainActivity.this, ViewContact.class);
