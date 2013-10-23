@@ -18,10 +18,16 @@
     <string name="work_phone_hint">Work Phone</string>
     <string name="email_address_hint">Email Address</string>
     <string name="photo_desc">Photo for current contact</string>
-    <string name="view_contact_homephone">Home Phone</string>
-    <string name="view_contact_workphone">Work Phone</string>
-    <string name="view_contact_mobilephone">Mobile Phone</string>
-    <string name="back_contact">Back</string>
-    <string name="title_activity_edit_contact">EditContact</string>
+    
+    
+    
+    <string name="back_contact">Back</string><string name="title_activity_edit_contact">EditContact</string><string name="view_contact_workphone">Work Phone</string><string name="view_contact_homephone">Home Phone</string><string name="view_contact_mobilephone">Mobile Phone</string>
+    
+    <string name="view_contact_addressline1">Address (Line 1)</string>
+    <string name="view_contact_addressline2">Address (Line 2)</string>
+    <string name="view_contact_city">City</string>
+    <string name="view_contact_country">Country</string>
+    <string name="view_contact_dateofbirth">Date of Birth</string>
+    <string name="view_contact_email">Email</string>
 
 </resources>

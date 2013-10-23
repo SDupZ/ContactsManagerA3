@@ -25,16 +25,16 @@ public final class R {
         public static final int ic_launcher=0x7f020001;
     }
     public static final class id {
-        public static final int action_settings=0x7f080017;
-        public static final int add_contact_button=0x7f080019;
+        public static final int action_settings=0x7f08001d;
+        public static final int add_contact_button=0x7f08001f;
         public static final int add_contact_image_view=0x7f080000;
-        public static final int back_contact_button=0x7f08001a;
+        public static final int back_contact_button=0x7f080020;
         public static final int contacts_listview=0x7f08000e;
-        public static final int contacts_listview_name=0x7f080015;
-        public static final int contacts_listview_photo=0x7f080016;
-        public static final int delete_contact_button=0x7f08001c;
-        public static final int done_button=0x7f080018;
-        public static final int edit_contact_button=0x7f08001b;
+        public static final int contacts_listview_name=0x7f08001b;
+        public static final int contacts_listview_photo=0x7f08001c;
+        public static final int delete_contact_button=0x7f080022;
+        public static final int done_button=0x7f08001e;
+        public static final int edit_contact_button=0x7f080021;
         public static final int edit_contact_image_view=0x7f080007;
         public static final int edit_email_address=0x7f08000d;
         public static final int edit_first_name=0x7f080008;
@@ -47,6 +47,12 @@ public final class R {
         public static final int home_phone=0x7f080004;
         public static final int last_name=0x7f080002;
         public static final int mobile_phone=0x7f080003;
+        public static final int view_contact_addressline1=0x7f080016;
+        public static final int view_contact_addressline2=0x7f080017;
+        public static final int view_contact_city=0x7f080018;
+        public static final int view_contact_country=0x7f080019;
+        public static final int view_contact_dateofbirth=0x7f08001a;
+        public static final int view_contact_email=0x7f080015;
         public static final int view_contact_firstname=0x7f080010;
         public static final int view_contact_homephone=0x7f080012;
         public static final int view_contact_lastname=0x7f080011;
@@ -72,7 +78,7 @@ public final class R {
         public static final int action_settings=0x7f050001;
         public static final int add_contact=0x7f050002;
         public static final int app_name=0x7f050000;
-        public static final int back_contact=0x7f050014;
+        public static final int back_contact=0x7f050011;
         public static final int delete_contact=0x7f05000c;
         public static final int done_button=0x7f050008;
         public static final int edit_contact=0x7f05000b;
@@ -84,12 +90,18 @@ public final class R {
         public static final int mobile_phone_hint=0x7f050007;
         public static final int photo_desc=0x7f050010;
         public static final int title_activity_add_contact=0x7f050003;
-        public static final int title_activity_edit_contact=0x7f050015;
+        public static final int title_activity_edit_contact=0x7f050012;
         public static final int title_activity_main_activityasdf=0x7f05000d;
         public static final int title_activity_view_contact=0x7f050009;
-        public static final int view_contact_homephone=0x7f050011;
-        public static final int view_contact_mobilephone=0x7f050013;
-        public static final int view_contact_workphone=0x7f050012;
+        public static final int view_contact_addressline1=0x7f050016;
+        public static final int view_contact_addressline2=0x7f050017;
+        public static final int view_contact_city=0x7f050018;
+        public static final int view_contact_country=0x7f050019;
+        public static final int view_contact_dateofbirth=0x7f05001a;
+        public static final int view_contact_email=0x7f05001b;
+        public static final int view_contact_homephone=0x7f050014;
+        public static final int view_contact_mobilephone=0x7f050015;
+        public static final int view_contact_workphone=0x7f050013;
         public static final int work_phone_hint=0x7f05000e;
     }
     public static final class style {
