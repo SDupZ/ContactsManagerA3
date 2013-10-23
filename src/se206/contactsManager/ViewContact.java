@@ -9,11 +9,16 @@ import android.view.MenuItem;
 import android.widget.TextView;
 
 public class ViewContact extends Activity {
+	private ContactsDatabaseHelper dbHelper;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
 		setContentView(R.layout.activity_view_contact);
+		
+		dbHelper = ContactsDatabaseHelper.getHelper(ViewContact.this); 
+		int clickedViewPosition = (Integer)this.getIntent().getExtras().get("clickedViewPosition");
 		
 		TextView viewContactFirstname = (TextView)findViewById(R.id.view_contact_firstname);
 		TextView viewContactLastname = (TextView)findViewById(R.id.view_contact_lastname);
@@ -21,11 +26,12 @@ public class ViewContact extends Activity {
 		TextView viewContactMobilePhone = (TextView)findViewById(R.id.view_contact_mobilephone);
 		TextView viewContactWorkPhone = (TextView)findViewById(R.id.view_contact_workphone);
 		    	
-		viewContactFirstname.setText("John");
+		viewContactFirstname.setText(dbHelper.getContact(clickedViewPosition));
 		viewContactLastname.setText("Smith");
 		viewContactHomePhone.setText("4799990");
 		viewContactMobilePhone.setText("021 111 1111");
-		viewContactWorkPhone.setText("123123123");		
+		viewContactWorkPhone.setText("123123123");
+		
 	}
 	public boolean onOptionsItemSelected(MenuItem item) {
         // Handle presses on the action bar items

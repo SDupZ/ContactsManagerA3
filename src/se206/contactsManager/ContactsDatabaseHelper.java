@@ -7,6 +7,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Bitmap;
 
 public class ContactsDatabaseHelper extends SQLiteOpenHelper{
+	private static ContactsDatabaseHelper instance;
+	
 	public static final int COLUMN_FIRSTNAME = 1;
 	public static final int COLUMN_LASTNAME = 2;
 	
@@ -23,12 +25,12 @@ public class ContactsDatabaseHelper extends SQLiteOpenHelper{
 	private static final String CONTACTS_HOMEPHONE 		= "homephone";
 	private static final String CONTACTS_WORKPHONE 		= "workphone";
 	private static final String CONTACTS_EMAILADDRESS 	= "emailAddress";
-	private static final String CONTACTS_STREETNUMBER 	= "streetNumber";
-	private static final String CONTACTS_STREETNAME 	= "streetName";
-	private static final String CONTACTS_SUBURB 		= "suburb";
-	private static final String CONTACTS_CITY 			= "city";	
+	private static final String CONTACTS_ADDRESSLINE1 	= "addressLine1";
+	private static final String CONTACTS_ADDRESSLINE2 	= "addressLine2";
+	private static final String CONTACTS_CITY			= "city";
+	private static final String CONTACTS_COUNTRY		= "country";	
 	private static final String CONTACTS_DATEOFBIRTH 	= "dateOfBirth";
-	private static final String CONTACTS_PHOTO 			= "photo";
+	//private static final String CONTACTS_PHOTO 			= "photo";
 	
 	//SQL String for creating contacts table.
 	private static final String CREATE_CONTACTS_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " ("
@@ -38,19 +40,30 @@ public class ContactsDatabaseHelper extends SQLiteOpenHelper{
 			+ CONTACTS_HOMEPHONE 		+ " TEXT,"
 			+ CONTACTS_WORKPHONE 		+ " TEXT,"
 			+ CONTACTS_EMAILADDRESS 	+ " TEXT,"
-			+ CONTACTS_STREETNUMBER 	+ " INTEGER,"
-			+ CONTACTS_STREETNAME 		+ " TEXT,"
-			+ CONTACTS_SUBURB 			+ " TEXT,"
-			+ CONTACTS_CITY 			+ " TEXT,"
+			+ CONTACTS_ADDRESSLINE1		+ " TEXT,"
+			+ CONTACTS_ADDRESSLINE2 	+ " TEXT,"
+			+ CONTACTS_CITY				+ " TEXT,"
+			+ CONTACTS_COUNTRY 			+ " TEXT,"
 			+ CONTACTS_DATEOFBIRTH 		+ " TEXT);";
 			//+ CONTACTS_PHOTO 			+ " STRING);";
 	
 	//SQL String for deleting contacts table
 	private static final String SQL_DELETE_CONTACTS_TABLE = "DROP TABLE IF EXISTS " + TABLE_NAME;
 	
-	public ContactsDatabaseHelper(Context context){
+	//-------------------------------------------------------------------------------------------------------------------------
+	// Singleton design pattern. Only one instance of this class is used.
+	//-------------------------------------------------------------------------------------------------------------------------
+	public static synchronized ContactsDatabaseHelper getHelper(Context context){
+		if (instance == null){
+			instance = new ContactsDatabaseHelper(context);
+		}
+		return instance;		
+	}
+	//Private constructor to ensure a new instance cannot be made by anything other than this class.
+	private ContactsDatabaseHelper(Context context){
 		super(context, TABLE_NAME, null, DATABASE_VERSION);		
 	}
+	//-------------------------------------------------------------------------------------------------------------------------
 	
 	@Override
 	public void onCreate(SQLiteDatabase db){
@@ -80,6 +93,7 @@ public class ContactsDatabaseHelper extends SQLiteOpenHelper{
 			test = 	rows.getString(0) + " " + rows.getString(1) + "\n";			
 		}
 		
+		db.close();
 		return test;
 	}
 	@Override

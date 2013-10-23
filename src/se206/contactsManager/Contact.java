@@ -11,14 +11,15 @@ public class Contact{
 	private String homePhone;
 	private String workPhone;
 	private String emailAddress;
-	private int streetNumber;
-	private String streetName;
-	private String suburb;
-	private String city;	
+	private String addressLine1;
+	private String addressLine2;
+	private String city;
+	private String country;
 	private String dateOfBirth;
-	private Bitmap photo;
+	//private Bitmap photo;
 	
-	public Contact(String firstName, String lastName){
+	public Contact(String firstName, String lastName, String mobilePhone, String homePhone, String workPhoen, String emailAddress
+			, String addressLine1, String addressLine2, String city, String country, String dateOfBirth){
 		this.firstName = firstName;
 		this.lastName = lastName;
 	}
