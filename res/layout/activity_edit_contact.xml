@@ -70,30 +70,30 @@
         android:id="@+id/edit_addressline1"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"	    
-	    android:inputType="textEmailAddress" />
+	    android:inputType="text" />
     
     <EditText
         android:id="@+id/edit_addressline2"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"	    
-	    android:inputType="textEmailAddress" />
+	    android:inputType="text" />
     
     <EditText
         android:id="@+id/edit_city"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"	    
-	    android:inputType="textEmailAddress" />
+	    android:inputType="text" />
     
     <EditText
         android:id="@+id/edit_country"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"	    
-	    android:inputType="textEmailAddress" />
+	    android:inputType="text" />
     
     <EditText
         android:id="@+id/edit_dateofbirth"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"	    
-	    android:inputType="textEmailAddress" />
+	    android:inputType="date" />
 
 </LinearLayout>
