@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
@@ -14,6 +15,18 @@ public class ViewContact extends Activity {
 	private ContactsDatabaseHelper dbHelper;
 	private Contact viewContact;
 	private int rowNumber;
+	
+	private TextView viewContactFirstname; 	
+	private TextView viewContactLastname; 	
+	private TextView viewContactHomePhone; 	
+	private TextView viewContactMobilePhone; 
+	private TextView viewContactWorkPhone; 	
+	private TextView viewContactEmail; 		
+	private TextView viewContactAddressline1;
+	private TextView viewContactAddressline2;
+	private TextView viewContactCity; 		
+	private TextView viewContactCountry; 	
+	private TextView viewContactDateOfBirth; 
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -26,20 +39,23 @@ public class ViewContact extends Activity {
 		
 		rowNumber = clickedViewPosition;
 		
-		viewContact = dbHelper.getContact(clickedViewPosition);
-		
-		TextView viewContactFirstname 		= (TextView)findViewById(R.id.view_contact_firstname);
-		TextView viewContactLastname 		= (TextView)findViewById(R.id.view_contact_lastname);
-		TextView viewContactHomePhone 		= (TextView)findViewById(R.id.view_contact_homephone);
-		TextView viewContactMobilePhone 	= (TextView)findViewById(R.id.view_contact_mobilephone);
-		TextView viewContactWorkPhone 		= (TextView)findViewById(R.id.view_contact_workphone);
-		TextView viewContactEmail 			= (TextView)findViewById(R.id.view_contact_email);		
-		TextView viewContactAddressline1 	= (TextView)findViewById(R.id.view_contact_addressline1);
-		TextView viewContactAddressline2 	= (TextView)findViewById(R.id.view_contact_addressline2);
-		TextView viewContactCity 			= (TextView)findViewById(R.id.view_contact_city);
-		TextView viewContactCountry 		= (TextView)findViewById(R.id.view_contact_country);
-		TextView viewContactDateOfBirth 	= (TextView)findViewById(R.id.view_contact_dateofbirth);
+		viewContactFirstname 		= (TextView)findViewById(R.id.view_contact_firstname);
+		viewContactLastname 		= (TextView)findViewById(R.id.view_contact_lastname);
+		viewContactHomePhone 		= (TextView)findViewById(R.id.view_contact_homephone);
+		viewContactMobilePhone 		= (TextView)findViewById(R.id.view_contact_mobilephone);
+		viewContactWorkPhone 		= (TextView)findViewById(R.id.view_contact_workphone);
+		viewContactEmail 			= (TextView)findViewById(R.id.view_contact_email);		
+		viewContactAddressline1 	= (TextView)findViewById(R.id.view_contact_addressline1);
+		viewContactAddressline2 	= (TextView)findViewById(R.id.view_contact_addressline2);
+		viewContactCity 			= (TextView)findViewById(R.id.view_contact_city);
+		viewContactCountry 			= (TextView)findViewById(R.id.view_contact_country);
+		viewContactDateOfBirth 		= (TextView)findViewById(R.id.view_contact_dateofbirth);
 		  
+		updateDetails();
+	}          
+	public void updateDetails(){
+		viewContact = dbHelper.getContact(rowNumber);
+		
 		viewContactFirstname.setText(viewContact.getFirstName());
 		viewContactLastname.setText(viewContact.getLastName());
 		viewContactHomePhone.setText(viewContact.getHomePhone());
@@ -51,7 +67,13 @@ public class ViewContact extends Activity {
 		viewContactCity.setText(viewContact.getCity());
 		viewContactCountry.setText(viewContact.getCountry());
 		viewContactDateOfBirth.setText(viewContact.getDateOfBirth());
-	}                           
+	}
+	
+	protected void onResume(){
+		super.onResume();
+		updateDetails();
+	}
+	
 	public boolean onOptionsItemSelected(MenuItem item) {
         // Handle presses on the action bar items
         if (item.getItemId() == R.id.edit_contact_button){        

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 public class ContactsDatabaseHelper extends SQLiteOpenHelper{
 	private static ContactsDatabaseHelper instance;
@@ -126,11 +127,15 @@ public class ContactsDatabaseHelper extends SQLiteOpenHelper{
 	}
 	public void insertData (Contact contact){
 		ContentValues contentValues = getContentValues(contact);		
-		this.getWritableDatabase().insert(ContactsDatabaseHelper.TABLE_NAME, null, contentValues);
+		SQLiteDatabase db = this.getWritableDatabase();
+		db.insert(ContactsDatabaseHelper.TABLE_NAME, null, contentValues);
+		db.close();
 	}
 	
 	public void updateData(Contact contact, int rowNumber){
 		ContentValues contentValues = getContentValues(contact);
-		this.getWritableDatabase().update(ContactsDatabaseHelper.TABLE_NAME, contentValues,"rowid == " + rowNumber, null);
+		SQLiteDatabase db = this.getWritableDatabase();
+		db.update(ContactsDatabaseHelper.TABLE_NAME, contentValues,"rowid == " + (rowNumber+1), null);
+		db.close();
 	}
 }                                                

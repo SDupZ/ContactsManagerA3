@@ -99,11 +99,10 @@ public final class R {
         public static final int title_activity_main_activityasdf=0x7f05000c;
         public static final int title_activity_view_contact=0x7f050009;
         public static final int view_contact_addressline1=0x7f050016;
-        public static final int view_contact_addressline2=0x7f050017;
-        public static final int view_contact_city=0x7f050018;
-        public static final int view_contact_country=0x7f050019;
-        public static final int view_contact_dateofbirth=0x7f05001a;
-        public static final int view_contact_email=0x7f05001b;
+        public static final int view_contact_city=0x7f050017;
+        public static final int view_contact_country=0x7f050018;
+        public static final int view_contact_dateofbirth=0x7f050019;
+        public static final int view_contact_email=0x7f05001a;
         public static final int view_contact_homephone=0x7f050014;
         public static final int view_contact_mobilephone=0x7f050015;
         public static final int view_contact_workphone=0x7f050013;

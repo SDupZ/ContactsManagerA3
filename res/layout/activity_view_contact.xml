@@ -80,11 +80,7 @@
 		<TextView
 		    android:id="@+id/view_contact_addressline1"
 		    style="@style/TextViewViewContactStyle" />
-		
-		<TextView
-		    android:text="@string/view_contact_addressline2"
-		    style="@style/TextViewHeadingStyle" />
-	        	
+		      	
 		<TextView
 		    android:id="@+id/view_contact_addressline2"
 		    style="@style/TextViewViewContactStyle" />
