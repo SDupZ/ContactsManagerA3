@@ -138,4 +138,10 @@ public class ContactsDatabaseHelper extends SQLiteOpenHelper{
 		db.update(ContactsDatabaseHelper.TABLE_NAME, contentValues,"rowid == " + (rowNumber+1), null);
 		db.close();
 	}
+	
+	public void deleteContact(int rowNumber){
+		SQLiteDatabase db = this.getWritableDatabase();
+		db.delete(TABLE_NAME, "rowid == "+ (rowNumber+1), null);
+		db.close();
+	}
 }                                                

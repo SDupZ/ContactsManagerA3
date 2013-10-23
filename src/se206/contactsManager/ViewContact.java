@@ -92,6 +92,7 @@ public class ViewContact extends Activity {
         		
         		@Override
         		public void onClick(DialogInterface arg0, int arg1){
+        			dbHelper.deleteContact(rowNumber);
         			onBackPressed();
         		}
         	});
