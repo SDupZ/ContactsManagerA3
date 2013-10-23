@@ -17,7 +17,6 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.AdapterView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class MainActivity extends Activity{
 	private ListView contacts_listview;

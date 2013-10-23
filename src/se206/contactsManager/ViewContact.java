@@ -13,6 +13,7 @@ public class ViewContact extends Activity {
 	
 	private ContactsDatabaseHelper dbHelper;
 	private Contact viewContact;
+	private int rowNumber;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +23,9 @@ public class ViewContact extends Activity {
 		
 		dbHelper = ContactsDatabaseHelper.getHelper(ViewContact.this); 
 		int clickedViewPosition = (Integer)this.getIntent().getExtras().get("clickedViewPosition");
+		
+		rowNumber = clickedViewPosition;
+		
 		viewContact = dbHelper.getContact(clickedViewPosition);
 		
 		TextView viewContactFirstname 		= (TextView)findViewById(R.id.view_contact_firstname);
@@ -53,6 +57,7 @@ public class ViewContact extends Activity {
         if (item.getItemId() == R.id.edit_contact_button){        
         	Intent intent = new Intent(ViewContact.this, EditContact.class);
         	intent.putExtra("contact", viewContact);
+        	intent.putExtra("rowNumber", rowNumber);
 	    	startActivity(intent);		    	
         }else if (item.getItemId() == R.id.delete_contact_button){
         	AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(ViewContact.this);

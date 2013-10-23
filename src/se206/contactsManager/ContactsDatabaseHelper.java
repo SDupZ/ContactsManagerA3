@@ -1,5 +1,6 @@
 package se206.contactsManager;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -106,4 +107,31 @@ public class ContactsDatabaseHelper extends SQLiteOpenHelper{
 		db.execSQL(SQL_DELETE_CONTACTS_TABLE);
 		onCreate(db);
 	}
-}
+	
+	private ContentValues getContentValues(Contact contact){
+		ContentValues contentValues = new ContentValues();		
+		contentValues.put(ContactsDatabaseHelper.CONTACTS_FIRSTNAME    	,	contact.getFirstName());	
+		contentValues.put(ContactsDatabaseHelper.CONTACTS_LASTNAME	   	,	contact.getLastName());
+		contentValues.put(ContactsDatabaseHelper.CONTACTS_MOBILEPHONE	,	contact.getMobilePhone());
+		contentValues.put(ContactsDatabaseHelper.CONTACTS_HOMEPHONE 	,	contact.getHomePhone());
+		contentValues.put(ContactsDatabaseHelper.CONTACTS_WORKPHONE 	,	contact.getWorkPhone());
+		contentValues.put(ContactsDatabaseHelper.CONTACTS_EMAILADDRESS 	,	contact.getEmailAddress());
+		contentValues.put(ContactsDatabaseHelper.CONTACTS_ADDRESSLINE1 	,	contact.getAddressLine1());
+		contentValues.put(ContactsDatabaseHelper.CONTACTS_ADDRESSLINE2 	,	contact.getAddressLine2());
+		contentValues.put(ContactsDatabaseHelper.CONTACTS_CITY			,	contact.getCity());
+		contentValues.put(ContactsDatabaseHelper.CONTACTS_COUNTRY		,	contact.getCountry());
+		contentValues.put(ContactsDatabaseHelper.CONTACTS_DATEOFBIRTH  	,	contact.getDateOfBirth());
+		
+		return contentValues;
+	}
+	public void insertData (Contact contact){
+		ContentValues contentValues = getContentValues(contact);		
+		this.getWritableDatabase().insert(ContactsDatabaseHelper.TABLE_NAME, null, contentValues);
+	}
+	
+	public void updateData(Contact contact, int rowNumber){
+		ContentValues contentValues = getContentValues(contact);
+		int numRowsChanged = this.getWritableDatabase().update(ContactsDatabaseHelper.TABLE_NAME, contentValues,
+				"=" + rowNumber, null);
+	}
+}                                                
