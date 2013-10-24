@@ -20,9 +20,22 @@ import android.view.View.OnClickListener;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+/**
+ * This class is the Add contact activity. It is responsible for creating and adding a new
+ * contact to the database as well as the contactslist for this session.
+ * 
+ * @author 	Simon du Preez 	
+ * 			5562045
+ * 			sdup571
+ */
 public class AddContact extends Activity implements OnClickListener{
-	private ImageView 	photo;
-	private EditText 	firstName;   
+	
+	private static int RESULT_LOAD_IMAGE = 1;				//Used to retrieve a photo from the gallery
+	
+	private ImageView 	photo;								//ImageView for photo
+	private String 		photoPath;							//Stores the path to an image stored in the gallery.
+	
+	private EditText 	firstName;   						//Editable Text fields to get contact details.
 	private EditText  	lastName;    
 	private EditText  	mobilePhone; 
 	private EditText  	homePhone;   
@@ -33,19 +46,25 @@ public class AddContact extends Activity implements OnClickListener{
 	private EditText  	city;        
 	private EditText  	country;     
 	private EditText 	dateOfBirth; 
-	private static int RESULT_LOAD_IMAGE = 1;
-	private ContactsDatabaseHelper dbHelper;
 	
-	private String photoPath;
+	private ContactsDatabaseHelper dbHelper;				//Instance of databasehelper to enable reading / writing to/from database.
 	
+	//-------------------------------------------------------------------------------------------------------------------------
+	// Oncreate for this activity.
+	//-------------------------------------------------------------------------------------------------------------------------
+	/**
+	 * This oncreate method must setup all the edit text fields to allow the user to enter information 
+	 * regarding a contact.
+	 */
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_add_contact);
 		
-		photo = (ImageView)findViewById(R.id.add_contact_image_view);
-		photo.setOnClickListener(this);
-		photoPath = null;
+		photo = (ImageView)findViewById(R.id.add_contact_image_view);		
+		photo.setOnClickListener(this);												//Set an onclick listener so we can choose a photo.
+		photoPath = null;															//Photo path is initially null as we have no photo yet!
+		
 		firstName   	=  (EditText)findViewById(R.id.first_name);
 		lastName        =  (EditText)findViewById(R.id.last_name);
 		mobilePhone     =  (EditText)findViewById(R.id.mobile_phone);
@@ -61,46 +80,80 @@ public class AddContact extends Activity implements OnClickListener{
 		dbHelper = ContactsDatabaseHelper.getHelper(AddContact.this);
 	}
 	
-	public boolean onOptionsItemSelected(MenuItem item) {
-		
-        // Handle presses on the action bar items
-        if (item.getItemId() == R.id.done_button){
-        	
-        	String f1 	= (firstName.getText().toString().trim().equals("") 	== true) 	? null 	:	firstName.getText().toString();
-			String f2 	= (lastName.getText().toString().trim().equals("") 	== true) 		? null 	:	lastName.getText().toString();
-			String f3	= (mobilePhone.getText().toString().trim().equals("") 	== true) 	? null 	:	mobilePhone.getText().toString();
-			String f4 	= (homePhone.getText().toString().trim().equals("") 	== true) 	? null	:	homePhone.getText().toString();  
-			String f5 	= (workPhone.getText().toString().trim().equals("") 	== true) 	? null	:	workPhone.getText().toString();  
-			String f6 	= (emailAddress.getText().toString().trim().equals("") == true) 	? null 	:	emailAddress.getText().toString();  
-			String f7 	= (addressLine1.getText().toString().trim().equals("") == true) 	? null 	:	addressLine1.getText().toString();  
-			String f8 	= (addressLine2.getText().toString().trim().equals("") == true) 	? null	:	addressLine2.getText().toString();  
-			String f9 	= (city.getText().toString().trim().equals("") 		== true) 		? null	:	city.getText().toString();  
-			String f10	= (country.getText().toString().trim().equals("") 		== true) 	? null	:	country.getText().toString();  
-			String f11	= (dateOfBirth.getText().toString().trim().equals("")	== true) 	? null	:	dateOfBirth.getText().toString();  
-			String f12	= photoPath == null ? null : photoPath;
-			
-			final Contact newContact = new Contact(f1,f2,f3,f4,f5,f6,f7,f8,f9,f10,f11,f12);
-			dbHelper.insertData(newContact);
-			String query = "SELECT ROWID from "+ ContactsDatabaseHelper.TABLE_NAME +" order by ROWID DESC limit 1";			
-			Cursor c = dbHelper.getReadableDatabase().rawQuery(query, null);
-			long lastId = -1;
-			if (c != null && c.moveToFirst()) {
-			    lastId = c.getLong(0);
-			}
-			newContact.setID(lastId);			
-			MyContacts.getMyContacts().getContactsList().add(newContact);
-			
-        	onBackPressed();      	
-        }
-        return super.onOptionsItemSelected(item);
-	}
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.add_contact, menu);
 		return true;
 	}
-
+	
+	//-------------------------------------------------------------------------------------------------------------------------
+	// Done button pressed. Methods in charge of saving details and storing them in database and contacts list.
+	//-------------------------------------------------------------------------------------------------------------------------
+	/**
+	 * This method is called when the menu button "done" is pressed. This means we must save the contact to the database and
+	 * add it to our contact list. Adding a contact takes a litter longer than the other functions as an id must be retrieved
+	 * from the database and then put into the contact list. This means that we can't put this in a background thread as the 
+	 * contact will just randomly pop-up on the main list when the background thread finishes. This won't look as good as
+	 * a slight delay in switching screens.
+	 */
+	public boolean onOptionsItemSelected(MenuItem item) {
+		
+        if (item.getItemId() == R.id.done_button){        	
+        	String f1 	= (firstName.getText().toString().trim().equals("") 	== true) 	? null 	:	firstName.getText().toString();
+			String f2 	= (lastName.getText().toString().trim().equals("") 		== true) 	? null 	:	lastName.getText().toString();
+			String f3	= (mobilePhone.getText().toString().trim().equals("") 	== true) 	? null 	:	mobilePhone.getText().toString();
+			String f4 	= (homePhone.getText().toString().trim().equals("") 	== true) 	? null	:	homePhone.getText().toString();  
+			String f5 	= (workPhone.getText().toString().trim().equals("") 	== true) 	? null	:	workPhone.getText().toString();  
+			String f6 	= (emailAddress.getText().toString().trim().equals("") 	== true) 	? null 	:	emailAddress.getText().toString();  
+			String f7 	= (addressLine1.getText().toString().trim().equals("") 	== true) 	? null 	:	addressLine1.getText().toString();  
+			String f8 	= (addressLine2.getText().toString().trim().equals("") 	== true) 	? null	:	addressLine2.getText().toString();  
+			String f9 	= (city.getText().toString().trim().equals("") 			== true) 	? null	:	city.getText().toString();  
+			String f10	= (country.getText().toString().trim().equals("") 		== true) 	? null	:	country.getText().toString();  
+			String f11	= (dateOfBirth.getText().toString().trim().equals("")	== true) 	? null	:	dateOfBirth.getText().toString();  
+			
+			String f12	= (photoPath == null ? null : photoPath);		//Photo path is either null or the path to a photo in the gallery. 
+			
+			//Create the new contact from the data provided.
+			final Contact newContact = new Contact(f1,f2,f3,f4,f5,f6,f7,f8,f9,f10,f11,f12);	
+			
+			//Insert the data into the database. This will give the contact a unique id.
+			dbHelper.insertData(newContact);	
+			
+			//Retrieve this id assigned by the database and then set the id in our new contact.
+			newContact.setID(getLastId());		
+			
+			//Finally update our contacts list with the new contact.
+			MyContacts.getMyContacts().getContactsList().add(newContact);
+			
+        	onBackPressed();      	
+        }
+        return super.onOptionsItemSelected(item);
+	}
+	
+	/**
+	 *  This method gets the last id assigned in the database. This is useful as we need to assign this id to the contact we just
+	 *  created otherwise we won't be able to identify the contact in the database.
+	 * @return long
+	 */
+	private long getLastId(){
+		String query = "SELECT ROWID from "+ ContactsDatabaseHelper.TABLE_NAME +" order by ROWID DESC limit 1";				
+		Cursor c = dbHelper.getReadableDatabase().rawQuery(query, null);
+		
+		long lastId = -1;								//long variable to store the last id assigned by database.
+		if (c != null && c.moveToFirst()) {	
+		    lastId = c.getLong(0);						//Get id in first column. We know this is accurate as we just put something there.
+		}		
+		return lastId;
+	}
+	
+	//-------------------------------------------------------------------------------------------------------------------------
+	// Listener "onclick" method for the image view. Methods below are for choosing a photo.
+	//-------------------------------------------------------------------------------------------------------------------------
+	/**
+	 *	This method is the onClick method for the listener attached to the image view. When the image view is clicked
+	 *	the user is taken to the android gallery and allowed to choose a photo to set as the contact photo.
+	 */
 	@Override
 	public void onClick(View v) {
 		if (v.equals(photo)){
