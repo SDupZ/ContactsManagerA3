@@ -19,6 +19,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.EditText;
+import android.widget.Toast;
 
 public class EditContact extends Activity implements OnClickListener{
 	private ImageView photo;
@@ -138,11 +139,10 @@ public class EditContact extends Activity implements OnClickListener{
 			new AsyncTask<Void, Void,Void>(){
 		    	@Override
 		    	protected Void doInBackground(Void...voids){
-		    		dbHelper.updateData(updatedContact, rowNumber);	
+		    		dbHelper.updateData(updatedContact);	
 		    		return null;
 		    	}    	
 		    }.execute();
-			
 			onBackPressed();   
 		}        
         return super.onOptionsItemSelected(item);

@@ -3,10 +3,11 @@ package se206.contactsManager;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.BitmapFactory;
@@ -56,35 +57,57 @@ public class MainActivity extends Activity{
         return true;
     } 
     
-
+    //-------------------------------------------------------------------------------------------------------------------------
     @Override
     public void onResume(){
     	super.onResume();
     	
     	if (listAdapter != null){ 
     		listAdapter.notifyDataSetChanged();
-    		//new updateData().execute();
     	}
-    }
-
+    }   
+    
+    //-------------------------------------------------------------------------------------------------------------------------
     private void setupContactListView(){ 	
-    	//listAdapter = new CustomCursorAdapter(MainActivity.this, dbHelper.getAllData());
-    	listAdapter = new CustomListAdapter(MainActivity.this);    	
+    	
+    	listAdapter = new CustomListAdapter(MainActivity.this);    	    	
     	contacts_listview.setAdapter(listAdapter);    	
-    	contacts_listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-    		public void onItemClick(AdapterView<?> parentView, View clickedView, int clickedViewPosition, long id){
+    	contacts_listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {    	
+    		
+    		public void onItemClick(AdapterView<?> parentView, View clickedView, int clickedViewPosition, long id){    			
     	    	Intent intent = new Intent(MainActivity.this, ViewContact.class);
     	    	intent.putExtra("clickedViewPosition", clickedViewPosition);
-    	    	startActivity(intent);		
-        	}    		
-    	});  	
+    	    	startActivity(intent);	
+    	    	
+        	}
+    	});    	
     }
      
     //Method to deal with the action bar add contact button
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle presses on the action bar items
+    	//Add a contact.
         if (item.getItemId() == R.id.add_contact_button){
-        	startActivity(new Intent().setClass(MainActivity.this, AddContact.class));        	
+        	
+        	startActivity(new Intent().setClass(MainActivity.this, AddContact.class));  
+        
+        //Sort contacts.
+        }else if (item.getItemId() == R.id.sort_order_button){
+        	AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(MainActivity.this);
+        	CharSequence[] myList = {"Firstname", "Lastname", "Home Phone","Mobile Phone"};
+        	
+        	dialogBuilder.setTitle("Choose a sort order:");
+        	
+        	dialogBuilder.setSingleChoiceItems(myList, 0, null);
+        	dialogBuilder.setNegativeButton("Cancel", null);
+        	dialogBuilder.setPositiveButton("Select", new DialogInterface.OnClickListener(){
+        		public void onClick(DialogInterface dialog, int id){
+        			int selectedPosition = ((AlertDialog)dialog).getListView().getCheckedItemPosition();
+        			MyContacts.getMyContacts().reorderList(selectedPosition);
+        			listAdapter.notifyDataSetChanged();
+        		}
+        	});
+        	dialogBuilder.setCancelable(true);        	
+        	dialogBuilder.create().show();
         }
         return super.onOptionsItemSelected(item);
     }
@@ -100,19 +123,23 @@ public class MainActivity extends Activity{
     				c.getString(c.getColumnIndex(c.getColumnName(3))),
     				c.getString(c.getColumnIndex(c.getColumnName(4))),
     				c.getString(c.getColumnIndex(c.getColumnName(5))),
-    				c.getString(c.getColumnIndex(c.getColumnName(6))),
+    				c.getString(c.getColumnIndex(c.getColumnName(6))),    				
     				c.getString(c.getColumnIndex(c.getColumnName(7))),
     				c.getString(c.getColumnIndex(c.getColumnName(8))),
     				c.getString(c.getColumnIndex(c.getColumnName(9))),
     				c.getString(c.getColumnIndex(c.getColumnName(10))),
     				c.getString(c.getColumnIndex(c.getColumnName(11))),
-    				c.getString(c.getColumnIndex(c.getColumnName(12)))    				
+    				c.getString(c.getColumnIndex(c.getColumnName(12)))    	
+    				
     				);    		
+    		
     		newContact.setID(Integer.parseInt(c.getString(c.getColumnIndex(c.getColumnName(0)))));
     		contactsList.add(newContact);
+    		
     	}while(c.moveToNext());
     	
     	globalContactsList.updateContactsList(contactsList);
+    	//MyContacts.getMyContacts().reorderList(0);
     }
     //**********************************************************************************************************************************
   	// 	Used to adapt the database to the listview on the main screen.

@@ -59,8 +59,7 @@ public class ViewContact extends Activity {
 		viewContactDateOfBirth 		= (TextView)findViewById(R.id.view_contact_dateofbirth);		
 		viewContactPhoto = (ImageView)findViewById(R.id.view_contact_photo);
 		
-		updateView();
-		
+		updateView();		
 	} 
 	
 	//-------------------------------------------------------------------------------------------------------------------------
@@ -96,7 +95,7 @@ public class ViewContact extends Activity {
         			new AsyncTask<Void, Void,Void>(){
         		    	@Override
         		    	protected Void doInBackground(Void...voids){
-        		    		dbHelper.deleteContact(rowNumber);
+        		    		dbHelper.deleteContact(viewContact);
         		    		return null;
         		    	}    	
         		    }.execute();

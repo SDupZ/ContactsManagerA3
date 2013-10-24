@@ -1,5 +1,7 @@
 package se206.contactsManager;
 
+import java.util.Comparator;
+
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -21,18 +23,6 @@ public class Contact implements Parcelable {
 	/**
 	 * Main Constructor for creating a contact. All Fields required at this point but any of which can be null;
 	 * Future improvements will work on this.
-	 * @param firstName
-	 * @param lastName
-	 * @param mobilePhone
-	 * @param homePhone
-	 * @param workPhone
-	 * @param emailAddress
-	 * @param addressLine1
-	 * @param addressLine2
-	 * @param city
-	 * @param country
-	 * @param dateOfBirth
-	 * @param photo
 	 */
 	public Contact(String firstName, String lastName, String mobilePhone, String homePhone, String workPhone, String emailAddress
 			, String addressLine1, String addressLine2, String city, String country, String dateOfBirth, String photo){
@@ -64,6 +54,40 @@ public class Contact implements Parcelable {
 		return 0;
 	}
 	
+    public static Comparator<Contact> getComparator(final String sortBy) {
+    	if ("firstName".equals(sortBy)){
+    		return (new Comparator<Contact>(){
+    			@Override
+				public int compare(Contact c1, Contact c2){
+    				return c1.getFirstName().compareTo(c2.getFirstName());
+    			}	    			
+    		});    	
+    	} else if ("lastName".equals(sortBy)) {
+    		return (new Comparator<Contact>(){
+    			@Override 
+    			public int compare(Contact c1, Contact c2){
+    				return c1.getLastName().compareTo(c2.getLastName());
+    			}	    			
+    		});
+    	}else if ("homePhone".equals(sortBy)) {
+    		return (new Comparator<Contact>(){
+    			@Override 
+    			public int compare(Contact c1, Contact c2){
+    				return c1.getHomePhone().compareTo(c2.getHomePhone());
+    			}	    			
+    		});
+    	}else if ("mobilePhone".equals(sortBy)) {
+    		return (new Comparator<Contact>(){
+    			@Override 
+    			public int compare(Contact c1, Contact c2){
+    				return c1.getMobilePhone().compareTo(c2.getMobilePhone());
+    			}	    			
+    		});
+    	}else {
+    		throw new IllegalArgumentException("invalid sort field: " + sortBy);
+    	}
+    }
+    
 	@Override
 	public void writeToParcel(Parcel dest, int flags){
 		//Just need to write each field into the parcel.

@@ -76,24 +76,6 @@ public class ContactsDatabaseHelper extends SQLiteOpenHelper{
 		return this.getReadableDatabase().rawQuery(buildSQL, null);
 	}
 	
-	/**
-	 *  Will return null value if rowNumber given is invalid.
-	 * @param rowNumber
-	 * @return Contact
-	 */
-	public Contact getContact(int rowNumber){
-		SQLiteDatabase db = this.getReadableDatabase();
-		Cursor rows = db.rawQuery("SELECT * FROM " + TABLE_NAME, null);
-		
-		Contact contact = null;
-		if (rows.moveToPosition(rowNumber)){
-			contact	= new Contact(rows.getString(0),rows.getString(1),rows.getString(2),rows.getString(3),rows.getString(4),rows.getString(5),rows.getString(6),
-					rows.getString(7),rows.getString(8),rows.getString(9),rows.getString(10), rows.getString(11));
-		}
-		
-		db.close();		
-		return contact;
-	}
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion){
 		db.execSQL(SQL_DELETE_CONTACTS_TABLE);
@@ -116,6 +98,7 @@ public class ContactsDatabaseHelper extends SQLiteOpenHelper{
 		contentValues.put(ContactsDatabaseHelper.CONTACTS_PHOTO			, 	contact.getPhoto());
 		
 		return contentValues;
+		
 	}
 	public void insertData (Contact contact){
 		ContentValues contentValues = getContentValues(contact);		
@@ -124,16 +107,16 @@ public class ContactsDatabaseHelper extends SQLiteOpenHelper{
 		db.close();
 	}
 	
-	public void updateData(Contact contact, int rowNumber){
+	public void updateData(Contact contact){
 		ContentValues contentValues = getContentValues(contact);
 		SQLiteDatabase db = this.getWritableDatabase();
-		db.update(ContactsDatabaseHelper.TABLE_NAME, contentValues,"rowid == " + (rowNumber+1), null);
+		db.update(ContactsDatabaseHelper.TABLE_NAME, contentValues,"rowid == " + (contact.getID()+1), null);	
 		db.close();
 	}
 	
-	public void deleteContact(int rowNumber){
+	public void deleteContact(Contact contact){
 		SQLiteDatabase db = this.getWritableDatabase();
-		db.delete(TABLE_NAME, "rowid == "+ (rowNumber+1), null);
+		db.delete(TABLE_NAME, "rowid == "+ contact.getID(), null);
 		db.close();
 	}
 }                                                
