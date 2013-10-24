@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -96,8 +97,14 @@ public class MainActivity extends Activity{
 			
 			String text = "" 	+ cursor.getString(cursor.getColumnIndex(cursor.getColumnName(ContactsDatabaseHelper.COLUMN_FIRSTNAME))) + " "
 								+ cursor.getString(cursor.getColumnIndex(cursor.getColumnName(ContactsDatabaseHelper.COLUMN_LASTNAME)));
-						
-			photo.setImageDrawable(getResources().getDrawable(R.drawable.dummyphoto));
+			String photoPath = cursor.getString(cursor.getColumnIndex(cursor.getColumnName(ContactsDatabaseHelper.COLUMN_PHOTO)));
+			
+			if(photoPath == null){
+				photo.setImageDrawable(getResources().getDrawable(R.drawable.dummyphoto));
+			}else{
+				photo.setImageBitmap(BitmapFactory.decodeFile(photoPath));
+			}
+			
 			photo.setAdjustViewBounds(true);
 			photo.setMaxHeight(100);			
 			photo.setMaxWidth(100);

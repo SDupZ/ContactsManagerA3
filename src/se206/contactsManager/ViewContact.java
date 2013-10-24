@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
@@ -51,12 +52,11 @@ public class ViewContact extends Activity {
 		viewContactAddressline2 	= (TextView)findViewById(R.id.view_contact_addressline2);
 		viewContactCity 			= (TextView)findViewById(R.id.view_contact_city);
 		viewContactCountry 			= (TextView)findViewById(R.id.view_contact_country);
-		viewContactDateOfBirth 		= (TextView)findViewById(R.id.view_contact_dateofbirth);
-		
+		viewContactDateOfBirth 		= (TextView)findViewById(R.id.view_contact_dateofbirth);		
 		viewContactPhoto = (ImageView)findViewById(R.id.view_contact_photo);
-		viewContactPhoto.setImageDrawable(getResources().getDrawable(R.drawable.dummyphoto));
 		
 		updateDetails();
+		
 	}          
 	public void updateDetails(){
 		viewContact = dbHelper.getContact(rowNumber);
@@ -72,6 +72,12 @@ public class ViewContact extends Activity {
 		viewContactCity.setText(viewContact.getCity());
 		viewContactCountry.setText(viewContact.getCountry());
 		viewContactDateOfBirth.setText(viewContact.getDateOfBirth());
+		
+		if(viewContact.getPhoto() == null){
+			viewContactPhoto.setImageDrawable(getResources().getDrawable(R.drawable.dummyphoto));
+		}else{
+			viewContactPhoto.setImageBitmap(BitmapFactory.decodeFile(viewContact.getPhoto()));
+		}
 	}
 	
 	protected void onResume(){

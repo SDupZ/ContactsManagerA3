@@ -1,8 +1,14 @@
 package se206.contactsManager;
 
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.BitmapFactory;
 
 import android.view.Menu;
 import android.view.MenuItem;
@@ -26,6 +32,7 @@ public class AddContact extends Activity implements OnClickListener{
 	private EditText 	dateOfBirth; 
 	
 	private ContactsDatabaseHelper dbHelper;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -92,7 +99,4 @@ public class AddContact extends Activity implements OnClickListener{
         	dialogBuilder.create().show();
 		}
 	}
-	
-	
-
 }

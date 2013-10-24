@@ -14,8 +14,7 @@
             android:layout_width="83dp"
             android:layout_height="118dp"
             android:paddingLeft="3dp"
-            android:paddingRight="3dp"
-            android:src="@drawable/dummyphoto" />
+            android:paddingRight="3dp" />
 
         <LinearLayout
             android:layout_width="match_parent"

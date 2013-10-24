@@ -11,6 +11,7 @@ public class ContactsDatabaseHelper extends SQLiteOpenHelper{
 	
 	public static final int COLUMN_FIRSTNAME = 1;
 	public static final int COLUMN_LASTNAME = 2;
+	public static final int COLUMN_PHOTO = 12;
 	
 	// Database version
 	public static final int DATABASE_VERSION = 1;
