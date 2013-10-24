@@ -1,6 +1,7 @@
 package se206.contactsManager;
 
 import java.util.Comparator;
+import java.util.Locale;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -59,20 +60,40 @@ public class Contact implements Parcelable {
     		return (new Comparator<Contact>(){
     			@Override
 				public int compare(Contact c1, Contact c2){
-    				return c1.getFirstName().compareTo(c2.getFirstName());
+    				if (c1.getFirstName() == null){
+    					return 1;
+    				}
+    				if (c2.getFirstName() == null){
+    					return -1;
+    				}
+    				return (c1.getFirstName().toUpperCase()).compareTo
+    						(c2.getFirstName().toUpperCase());
     			}	    			
     		});    	
     	} else if ("lastName".equals(sortBy)) {
     		return (new Comparator<Contact>(){
     			@Override 
     			public int compare(Contact c1, Contact c2){
-    				return c1.getLastName().compareTo(c2.getLastName());
+    				if (c1.getLastName() == null){
+    					return 1;
+    				}
+    				if (c2.getLastName() == null){
+    					return -1;
+    				}
+    				return (c1.getLastName().toUpperCase()).compareTo
+    						(c2.getLastName().toUpperCase());
     			}	    			
     		});
     	}else if ("homePhone".equals(sortBy)) {
     		return (new Comparator<Contact>(){
     			@Override 
     			public int compare(Contact c1, Contact c2){
+    				if (c1.getHomePhone() == null){
+    					return 1;
+    				}
+    				if (c2.getHomePhone() == null){
+    					return -1;
+    				}
     				return c1.getHomePhone().compareTo(c2.getHomePhone());
     			}	    			
     		});
@@ -80,6 +101,12 @@ public class Contact implements Parcelable {
     		return (new Comparator<Contact>(){
     			@Override 
     			public int compare(Contact c1, Contact c2){
+    				if (c1.getMobilePhone() == null){
+    					return 1;
+    				}
+    				if (c2.getMobilePhone() == null){
+    					return -1;
+    				}
     				return c1.getMobilePhone().compareTo(c2.getMobilePhone());
     			}	    			
     		});

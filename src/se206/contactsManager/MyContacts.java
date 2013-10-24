@@ -21,6 +21,7 @@ public class MyContacts {
 		}
 		return instance;		
 	}
+	
 	//Private constructor to ensure a new instance cannot be made by anything other than this class.
 	private MyContacts(){		
 	}

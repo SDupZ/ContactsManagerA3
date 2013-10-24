@@ -24,6 +24,8 @@ import android.widget.AdapterView;
 import android.widget.TextView;
 
 public class MainActivity extends Activity{
+	private static int sortOrder;
+	
 	private ListView contacts_listview;
 	private ContactsDatabaseHelper dbHelper;
 	private ArrayAdapter<Contact> listAdapter;
@@ -41,11 +43,10 @@ public class MainActivity extends Activity{
         setContentView(R.layout.activity_main);
         
         dbHelper = ContactsDatabaseHelper.getHelper(MainActivity.this);
-        Log.d("Something", "test");
         contactsList = new ArrayList<Contact>(); 
         contacts_listview = (ListView)findViewById(R.id.contacts_listview);    
         globalContactsList = MyContacts.getMyContacts();
-        
+        sortOrder = MyContacts.FIRSTNAME_ORDER;
         
         populateContactListFromDatabase();
       //Setup ListView which displays contacts
@@ -64,7 +65,8 @@ public class MainActivity extends Activity{
     public void onResume(){
     	super.onResume();
     	
-    	if (listAdapter != null){ 
+    	if (listAdapter != null){
+    		MyContacts.getMyContacts().reorderList(sortOrder);
     		listAdapter.notifyDataSetChanged();
     	}
     }   
@@ -140,7 +142,7 @@ public class MainActivity extends Activity{
 	    	}while(c.moveToNext());
     	}
     	globalContactsList.updateContactsList(contactsList);
-    	MyContacts.getMyContacts().reorderList(0);
+    	MyContacts.getMyContacts().reorderList(sortOrder);
     }
     //**********************************************************************************************************************************
   	// 	Used to adapt the database to the listview on the main screen.
