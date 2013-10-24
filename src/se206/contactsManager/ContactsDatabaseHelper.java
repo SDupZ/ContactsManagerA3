@@ -69,15 +69,6 @@ public class ContactsDatabaseHelper extends SQLiteOpenHelper{
 	@Override
 	public void onCreate(SQLiteDatabase db){
 		db.execSQL(CREATE_CONTACTS_TABLE);
-		
-		//Just testing purposes
-		final String FIRST_ENTRY = "INSERT INTO " + TABLE_NAME + " VALUES('Simon', 'du Preez', null, null, null, null, null, null, null, null, null,null)";
-		db.execSQL(FIRST_ENTRY);
-		final String SECOND_ENTRY = "INSERT INTO " + TABLE_NAME + " VALUES('John','Snow', null, null, null, null, null, null, null, null, null, null)";
-		db.execSQL(SECOND_ENTRY);
-		final String THIRD_ENTRY = "INSERT INTO " + TABLE_NAME + " VALUES('Nic', 'Cage', null, null, null, null, null, null, null, null, null, null)";
-		db.execSQL(THIRD_ENTRY);
-		
 	}
 	
 	public Cursor getAllData(){

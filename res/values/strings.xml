@@ -34,5 +34,6 @@
     <string name="city_hint">City</string>
     <string name="country_hint">Country</string>
     <string name="date_of_birth_hint">Date of Birth</string>
+    <string name="sort_order">Sort Order</string>
 
 </resources>

@@ -7,6 +7,12 @@
         android:title="@string/add_contact" />
     
     <item
+        android:id="@+id/sort_order_button"
+        android:orderInCategory="1"
+        android:showAsAction="never"        
+        android:title="@string/sort_order" />
+    
+    <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"
         android:showAsAction="never"
