@@ -29,7 +29,7 @@ public class MainActivity extends Activity{
         
         dbHelper = ContactsDatabaseHelper.getHelper(MainActivity.this); 
         contacts_listview = (ListView)findViewById(R.id.contacts_listview);    
-
+        
         //Setup ListView which displays contacts
         setupContactListView();
     }
