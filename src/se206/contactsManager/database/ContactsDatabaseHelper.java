@@ -1,5 +1,6 @@
-package se206.contactsManager;
+package se206.contactsManager.database;
 
+import se206.contactsManager.Contact;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
