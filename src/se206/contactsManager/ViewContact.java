@@ -1,5 +1,6 @@
 package se206.contactsManager;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -31,6 +32,9 @@ public class ViewContact extends Activity {
 	private TextView viewContactCountry; 	
 	private TextView viewContactDateOfBirth; 
 	
+	//-------------------------------------------------------------------------------------------------------------------------
+	// On Create
+	//-------------------------------------------------------------------------------------------------------------------------
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -55,11 +59,73 @@ public class ViewContact extends Activity {
 		viewContactDateOfBirth 		= (TextView)findViewById(R.id.view_contact_dateofbirth);		
 		viewContactPhoto = (ImageView)findViewById(R.id.view_contact_photo);
 		
-		updateDetails();
+		updateView();
 		
-	}          
-	public void updateDetails(){
-		viewContact = dbHelper.getContact(rowNumber);
+	} 
+	
+	//-------------------------------------------------------------------------------------------------------------------------
+	protected void onResume(){
+		super.onResume();
+		updateView();
+	}
+	
+	//-------------------------------------------------------------------------------------------------------------------------
+	public boolean onOptionsItemSelected(MenuItem item) {
+        
+		//Edit Contact Button Pushed
+        if (item.getItemId() == R.id.edit_contact_button){        
+        	Intent intent = new Intent(ViewContact.this, EditContact.class);
+        	intent.putExtra("contact", viewContact);
+        	intent.putExtra("rowNumber", rowNumber);
+	    	startActivity(intent);		
+	    	
+	    //Delete Contact Button Pushed
+        }else if (item.getItemId() == R.id.delete_contact_button){
+        	AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(ViewContact.this);
+        	
+        	dialogBuilder.setTitle("Delete contact?");
+        	dialogBuilder.setMessage("This contact will be removed.");
+        	
+        	dialogBuilder.setNegativeButton("Cancel", null);
+        	dialogBuilder.setPositiveButton("Delete", new DialogInterface.OnClickListener(){
+        		
+        		@Override
+        		public void onClick(DialogInterface arg0, int arg1){
+
+        			MyContacts.getMyContacts().getContactsList().remove(rowNumber);
+        			new AsyncTask<Void, Void,Void>(){
+        		    	@Override
+        		    	protected Void doInBackground(Void...voids){
+        		    		dbHelper.deleteContact(rowNumber);
+        		    		return null;
+        		    	}    	
+        		    }.execute();
+        			onBackPressed();
+        		}
+        	});
+        	dialogBuilder.setCancelable(true);        	
+        	dialogBuilder.create().show();
+        	
+        //Back Contact Button Pushed
+        }else if (item.getItemId() == R.id.back_contact_button){
+        	onBackPressed(); 
+        }
+        return super.onOptionsItemSelected(item);
+    }
+	
+	//-------------------------------------------------------------------------------------------------------------------------
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.view_contact, menu);
+		return true;
+	}
+	
+	//-------------------------------------------------------------------------------------------------------------------------
+	// This method just updates the view page with updated information.
+	//-------------------------------------------------------------------------------------------------------------------------	
+	public void updateView(){
+		viewContact = MyContacts.getMyContacts().getContactsList().get(rowNumber);
 		
 		viewContactFirstname.setText(viewContact.getFirstName());
 		viewContactLastname.setText(viewContact.getLastName());
@@ -77,48 +143,8 @@ public class ViewContact extends Activity {
 		}else{
 			viewContactPhoto.setImageBitmap(BitmapFactory.decodeFile(viewContact.getPhoto()));
 		}
-	}
+	}	
 	
-	protected void onResume(){
-		super.onResume();
-		updateDetails();
-	}
 	
-	public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle presses on the action bar items
-        if (item.getItemId() == R.id.edit_contact_button){        
-        	Intent intent = new Intent(ViewContact.this, EditContact.class);
-        	intent.putExtra("contact", viewContact);
-        	intent.putExtra("rowNumber", rowNumber);
-	    	startActivity(intent);		    	
-        }else if (item.getItemId() == R.id.delete_contact_button){
-        	AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(ViewContact.this);
-        	
-        	dialogBuilder.setTitle("Delete contact?");
-        	dialogBuilder.setMessage("This contact will be removed.");
-        	
-        	dialogBuilder.setNegativeButton("Cancel", null);
-        	dialogBuilder.setPositiveButton("Delete", new DialogInterface.OnClickListener(){
-        		
-        		@Override
-        		public void onClick(DialogInterface arg0, int arg1){
-        			dbHelper.deleteContact(rowNumber);
-        			onBackPressed();
-        		}
-        	});
-        	dialogBuilder.setCancelable(true);
-        	
-        	dialogBuilder.create().show();
-        }else if (item.getItemId() == R.id.back_contact_button){
-        	onBackPressed(); 
-        }
-        return super.onOptionsItemSelected(item);
-    }
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.view_contact, menu);
-		return true;
-	}
 
 }

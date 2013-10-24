@@ -1,8 +1,9 @@
 package se206.contactsManager;
 
-import java.io.FileNotFoundException;
+import java.util.List;
 
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.app.Activity;
@@ -20,29 +21,32 @@ import android.widget.ImageView;
 import android.widget.EditText;
 
 public class EditContact extends Activity implements OnClickListener{
-	ImageView photo;
-	String photoPath;
-	Contact editContact;
-	
+	private ImageView photo;
+	private String photoPath;
+	private Contact editContact;
+	private Contact updatedContact;
 	private ContactsDatabaseHelper dbHelper;
 	private int rowNumber;
 	
-	private EditText 	firstName;   
-	private EditText  	lastName;    
-	private EditText  	mobilePhone; 
-	private EditText  	homePhone;   
-	private EditText  	workPhone;   
-	private EditText  	emailAddress;
-	private EditText  	addressLine1;
-	private EditText  	addressLine2;
-	private EditText  	city;        
-	private EditText  	country;     
-	private EditText 	dateOfBirth; 
+	private EditText firstName;   
+	private EditText lastName;    
+	private EditText mobilePhone; 
+	private EditText homePhone;   
+	private EditText workPhone;   
+	private EditText emailAddress;
+	private EditText addressLine1;
+	private EditText addressLine2;
+	private EditText city;        
+	private EditText country;     
+	private EditText dateOfBirth; 
 	
 	private EditText[] editTextFields;
 	
 	private static int RESULT_LOAD_IMAGE = 1;
 	
+	//-------------------------------------------------------------------------------------------------------------------------
+	// On Create
+	//-------------------------------------------------------------------------------------------------------------------------
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -106,7 +110,11 @@ public class EditContact extends Activity implements OnClickListener{
 		}
 	}
 	
+	//-------------------------------------------------------------------------------------------------------------------------
 	public boolean onOptionsItemSelected(MenuItem item) {
+		
+		//Done Button Pushed
+		//Need to save to database and to MyContactsList.
 		if (item.getItemId() == R.id.done_button){
 			String f1 	= (firstName.getText().toString().equals("") 	== true) 	? editContact.getFirstName() 	:	firstName.getText().toString();
 			String f2 	= (lastName.getText().toString().equals("") 	== true) 	? editContact.getLastName() 	:	lastName.getText().toString();
@@ -119,15 +127,28 @@ public class EditContact extends Activity implements OnClickListener{
 			String f9 	= (city.getText().toString().equals("") 		== true) 	? editContact.getCity() 		:	city.getText().toString();  
 			String f10	= (country.getText().toString().equals("") 		== true) 	? editContact.getCountry() 		:	country.getText().toString();  
 			String f11	= (dateOfBirth.getText().toString().equals("")	== true) 	? editContact.getDateOfBirth() 	:	dateOfBirth.getText().toString();  
-			
 			String f12	= photoPath;
-			Contact updatedContact = new Contact(f1,f2,f3,f4,f5,f6,f7,f8,f9,f10,f11,f12);
 			
-			dbHelper.updateData(updatedContact, rowNumber);	
+			updatedContact = new Contact(f1,f2,f3,f4,f5,f6,f7,f8,f9,f10,f11,f12);
+			
+			List<Contact> contacts = MyContacts.getMyContacts().getContactsList();
+			contacts.remove(rowNumber);
+			contacts.add(rowNumber, updatedContact);			
+			
+			new AsyncTask<Void, Void,Void>(){
+		    	@Override
+		    	protected Void doInBackground(Void...voids){
+		    		dbHelper.updateData(updatedContact, rowNumber);	
+		    		return null;
+		    	}    	
+		    }.execute();
+			
 			onBackPressed();   
 		}        
         return super.onOptionsItemSelected(item);
 	}
+	
+	//-------------------------------------------------------------------------------------------------------------------------
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
@@ -135,22 +156,22 @@ public class EditContact extends Activity implements OnClickListener{
 		return true;
 	}
 
+	//-------------------------------------------------------------------------------------------------------------------------
 	@Override
 	public void onClick(View v) {
+		
+		//Photo has been clicked
 		if (v.equals(photo)){
-			AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(EditContact.this);
-        	
+			AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(EditContact.this);        	
         	dialogBuilder.setTitle("Choose a picture");
         	dialogBuilder.setPositiveButton("Choose a Picture", new DialogInterface.OnClickListener(){        		
         		@Override
         		public void onClick(DialogInterface arg0, int arg1){
-        			Intent i = new Intent(
-        					Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);        					 
+        			Intent i = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);        					 
         			startActivityForResult(i, RESULT_LOAD_IMAGE);
         		}
         	});
-        	dialogBuilder.setNegativeButton("Restore Default Avatar", new DialogInterface.OnClickListener() {
-				
+        	dialogBuilder.setNegativeButton("Restore Default Avatar", new DialogInterface.OnClickListener() {				
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
 					photoPath = null;
@@ -162,7 +183,7 @@ public class EditContact extends Activity implements OnClickListener{
         	dialogBuilder.create().show();
 		}
 	}
-	
+	//-------------------------------------------------------------------------------------------------------------------------
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
          
@@ -180,6 +201,11 @@ public class EditContact extends Activity implements OnClickListener{
             
             photoPath = picturePath;
             photo.setImageBitmap(BitmapFactory.decodeFile(picturePath));
-        }
+       }
     }
+    //**********************************************************************************************************************************
+  	// 	Used to write data into the database since this is a costly process.
+    //	This is called when data has been changed and the database needs to be updated.
+  	//**********************************************************************************************************************************
+    
 }

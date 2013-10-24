@@ -1,6 +1,7 @@
 package se206.contactsManager;
 
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.app.Activity;
@@ -74,9 +75,17 @@ public class AddContact extends Activity implements OnClickListener{
 			String f11	= (dateOfBirth.getText().toString().trim().equals("")	== true) 	? null	:	dateOfBirth.getText().toString();  
 			String f12	= photoPath == null ? null : photoPath;
 			
-			Contact newContact = new Contact(f1,f2,f3,f4,f5,f6,f7,f8,f9,f10,f11, f12);
+			final Contact newContact = new Contact(f1,f2,f3,f4,f5,f6,f7,f8,f9,f10,f11, f12);
 			
-			dbHelper.insertData(newContact);
+			MyContacts.getMyContacts().getContactsList().add(newContact);
+			
+			new AsyncTask<Void, Void,Void>(){
+		    	@Override
+		    	protected Void doInBackground(Void...voids){
+		    		dbHelper.insertData(newContact);
+		    		return null;
+		    	}    	
+		    }.execute();			
         	onBackPressed();      	
         }
         return super.onOptionsItemSelected(item);

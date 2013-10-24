@@ -25,26 +25,30 @@ public class MainActivity extends Activity{
 	private ListView contacts_listview;
 	private ContactsDatabaseHelper dbHelper;
 	private ArrayAdapter<Contact> listAdapter;
+	
+	private MyContacts globalContactsList;
 	private List<Contact> contactsList;
 
+	//-------------------------------------------------------------------------------------------------------------------------
+	// On Create
+	//-------------------------------------------------------------------------------------------------------------------------
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);        
+        super.onCreate(savedInstanceState);       
         
         setContentView(R.layout.activity_main);
         
         dbHelper = ContactsDatabaseHelper.getHelper(MainActivity.this);        
-        contactsList = new ArrayList<Contact>();
-        
-       
-        
+        contactsList = new ArrayList<Contact>(); 
         contacts_listview = (ListView)findViewById(R.id.contacts_listview);    
+        globalContactsList = MyContacts.getMyContacts();
         
-        //Setup ListView which displays contacts
+        
         populateContactListFromDatabase();
+      //Setup ListView which displays contacts
         setupContactListView();
     }
-    
+  //-------------------------------------------------------------------------------------------------------------------------
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.    	
@@ -56,8 +60,10 @@ public class MainActivity extends Activity{
     @Override
     public void onResume(){
     	super.onResume();
-    	if (listAdapter != null){    		
-    		new updateData().execute();
+    	
+    	if (listAdapter != null){ 
+    		listAdapter.notifyDataSetChanged();
+    		//new updateData().execute();
     	}
     }
 
@@ -83,6 +89,7 @@ public class MainActivity extends Activity{
         return super.onOptionsItemSelected(item);
     }
     
+    //This should only have to be called once. -At the initial load of the application.
     private void populateContactListFromDatabase(){
     	Cursor c = dbHelper.getAllData();
     	c.moveToFirst();
@@ -104,6 +111,8 @@ public class MainActivity extends Activity{
     		newContact.setID(Integer.parseInt(c.getString(c.getColumnIndex(c.getColumnName(0)))));
     		contactsList.add(newContact);
     	}while(c.moveToNext());
+    	
+    	globalContactsList.updateContactsList(contactsList);
     }
     //**********************************************************************************************************************************
   	// 	Used to adapt the database to the listview on the main screen.
@@ -138,25 +147,8 @@ public class MainActivity extends Activity{
 			photo.setMaxWidth(100);
 
 			//Set the text for each view.
-			name.setText(text);
-			
+			name.setText(text);			
 			return view;
 		}
-	}    
-    //**********************************************************************************************************************************
-  	// 	Used to get data from database in new thread.
-    //	This is called when data has been changed in the database and needs to be retrieved.
-  	//**********************************************************************************************************************************
-    private class updateData extends AsyncTask<Void, Integer, List<Contact>>{
-    	protected List<Contact> doInBackground(Void...voids){
-    		//return dbHelper.getAllData();
-    		contactsList.clear();
-    		populateContactListFromDatabase();
-    		return contactsList;
-    	}    	
-    	protected void onPostExecute(List<Contact> data){
-    		listAdapter.notifyDataSetChanged();
-    	}
-    }
-	
+	}
 }
