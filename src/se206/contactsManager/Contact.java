@@ -15,7 +15,7 @@ public class Contact implements Parcelable {
 	private String city;
 	private String country;
 	private String dateOfBirth;
-	//private String photo;
+	private String photo;
 	
 	/**
 	 * Main Constructor for creating a contact. All Fields required at this point but any of which can be null;
@@ -31,9 +31,10 @@ public class Contact implements Parcelable {
 	 * @param city
 	 * @param country
 	 * @param dateOfBirth
+	 * @param photo
 	 */
 	public Contact(String firstName, String lastName, String mobilePhone, String homePhone, String workPhone, String emailAddress
-			, String addressLine1, String addressLine2, String city, String country, String dateOfBirth){
+			, String addressLine1, String addressLine2, String city, String country, String dateOfBirth, String photo){
 		this.firstName    =   firstName;    
 		this.lastName     =   lastName;     
 		this.mobilePhone  =   mobilePhone;  
@@ -44,7 +45,8 @@ public class Contact implements Parcelable {
 		this.addressLine2 =   addressLine2; 
 		this.city         =   city;         
 		this.country      =   country;      
-		this.dateOfBirth  =   dateOfBirth;  
+		this.dateOfBirth  =   dateOfBirth; 
+		this.photo 		  =   photo;
 	}
 	
 	/**
@@ -77,6 +79,7 @@ public class Contact implements Parcelable {
 		dest.writeString(city);        
 		dest.writeString(country);     
 		dest.writeString(dateOfBirth);
+		dest.writeString(photo);
 	}
 	
 	private void readFromParcel (Parcel in){
@@ -90,7 +93,8 @@ public class Contact implements Parcelable {
 		addressLine2   	=	in.readString();  
 		city           	=	in.readString();  
 		country        	=	in.readString();  
-		dateOfBirth    	=	in.readString();  
+		dateOfBirth    	=	in.readString(); 
+		photo			= 	in.readString();
 	}
 	
 	public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
@@ -140,6 +144,9 @@ public class Contact implements Parcelable {
 	}
 	public String getDateOfBirth(){
 		return dateOfBirth;
-	}	
+	}
+	public String getPhoto(){
+		return photo;
+	}
 
 }

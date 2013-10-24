@@ -5,7 +5,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 public class ContactsDatabaseHelper extends SQLiteOpenHelper{
 	private static ContactsDatabaseHelper instance;
@@ -31,7 +30,7 @@ public class ContactsDatabaseHelper extends SQLiteOpenHelper{
 	private static final String CONTACTS_CITY			= "city";
 	private static final String CONTACTS_COUNTRY		= "country";	
 	private static final String CONTACTS_DATEOFBIRTH 	= "dateOfBirth";
-	//private static final String CONTACTS_PHOTO 			= "photo";
+	private static final String CONTACTS_PHOTO 			= "photo";
 	
 	//SQL String for creating contacts table.
 	private static final String CREATE_CONTACTS_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " ("
@@ -45,8 +44,8 @@ public class ContactsDatabaseHelper extends SQLiteOpenHelper{
 			+ CONTACTS_ADDRESSLINE2 	+ " TEXT,"
 			+ CONTACTS_CITY				+ " TEXT,"
 			+ CONTACTS_COUNTRY 			+ " TEXT,"
-			+ CONTACTS_DATEOFBIRTH 		+ " TEXT);";
-			//+ CONTACTS_PHOTO 			+ " STRING);";
+			+ CONTACTS_DATEOFBIRTH 		+ " TEXT,"
+			+ CONTACTS_PHOTO 			+ " TEXT);";
 	
 	//SQL String for deleting contacts table
 	private static final String SQL_DELETE_CONTACTS_TABLE = "DROP TABLE IF EXISTS " + TABLE_NAME;
@@ -71,11 +70,11 @@ public class ContactsDatabaseHelper extends SQLiteOpenHelper{
 		db.execSQL(CREATE_CONTACTS_TABLE);
 		
 		//Just testing purposes
-		final String FIRST_ENTRY = "INSERT INTO " + TABLE_NAME + " VALUES('Simon', 'du Preez', null, null, null, null, null, null, null, null, null)";
+		final String FIRST_ENTRY = "INSERT INTO " + TABLE_NAME + " VALUES('Simon', 'du Preez', null, null, null, null, null, null, null, null, null,null)";
 		db.execSQL(FIRST_ENTRY);
-		final String SECOND_ENTRY = "INSERT INTO " + TABLE_NAME + " VALUES('John','Snow', null, null, null, null, null, null, null, null, null)";
+		final String SECOND_ENTRY = "INSERT INTO " + TABLE_NAME + " VALUES('John','Snow', null, null, null, null, null, null, null, null, null, null)";
 		db.execSQL(SECOND_ENTRY);
-		final String THIRD_ENTRY = "INSERT INTO " + TABLE_NAME + " VALUES('Nic', 'Cage', null, null, null, null, null, null, null, null, null)";
+		final String THIRD_ENTRY = "INSERT INTO " + TABLE_NAME + " VALUES('Nic', 'Cage', null, null, null, null, null, null, null, null, null, null)";
 		db.execSQL(THIRD_ENTRY);
 		
 	}
@@ -97,7 +96,7 @@ public class ContactsDatabaseHelper extends SQLiteOpenHelper{
 		Contact contact = null;
 		if (rows.moveToPosition(rowNumber)){
 			contact	= new Contact(rows.getString(0),rows.getString(1),rows.getString(2),rows.getString(3),rows.getString(4),rows.getString(5),rows.getString(6),
-					rows.getString(7),rows.getString(8),rows.getString(9),rows.getString(10));
+					rows.getString(7),rows.getString(8),rows.getString(9),rows.getString(10), rows.getString(11));
 		}
 		
 		db.close();		
@@ -122,6 +121,7 @@ public class ContactsDatabaseHelper extends SQLiteOpenHelper{
 		contentValues.put(ContactsDatabaseHelper.CONTACTS_CITY			,	contact.getCity());
 		contentValues.put(ContactsDatabaseHelper.CONTACTS_COUNTRY		,	contact.getCountry());
 		contentValues.put(ContactsDatabaseHelper.CONTACTS_DATEOFBIRTH  	,	contact.getDateOfBirth());
+		contentValues.put(ContactsDatabaseHelper.CONTACTS_PHOTO			, 	contact.getPhoto());
 		
 		return contentValues;
 	}

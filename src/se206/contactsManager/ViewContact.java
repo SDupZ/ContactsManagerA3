@@ -5,9 +5,9 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 public class ViewContact extends Activity {
@@ -15,6 +15,8 @@ public class ViewContact extends Activity {
 	private ContactsDatabaseHelper dbHelper;
 	private Contact viewContact;
 	private int rowNumber;
+	
+	private ImageView viewContactPhoto;
 	
 	private TextView viewContactFirstname; 	
 	private TextView viewContactLastname; 	
@@ -50,7 +52,10 @@ public class ViewContact extends Activity {
 		viewContactCity 			= (TextView)findViewById(R.id.view_contact_city);
 		viewContactCountry 			= (TextView)findViewById(R.id.view_contact_country);
 		viewContactDateOfBirth 		= (TextView)findViewById(R.id.view_contact_dateofbirth);
-		  
+		
+		viewContactPhoto = (ImageView)findViewById(R.id.view_contact_photo);
+		viewContactPhoto.setImageDrawable(getResources().getDrawable(R.drawable.dummyphoto));
+		
 		updateDetails();
 	}          
 	public void updateDetails(){

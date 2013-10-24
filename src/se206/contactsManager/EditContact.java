@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.app.AlertDialog;
 
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -76,6 +75,7 @@ public class EditContact extends Activity implements OnClickListener{
 			};
 		String[] fieldValues = {"\"First Name\"", "\"Last Name\"", "\"Mobile Phone\"", "\"Home Phone\"", "\"Work Phone\"", "\"Email Address\"",
 				"\"Address (Line 1)\"", "\"Address (Line 2)\"", "\"City\"", "\"Country\"", "\"Date of Birth\""};
+		
 		for( int i = 0; i< editTextFields.length; i++){
 			String hint = "";
 			if (contactDetails[i] == null || contactDetails[i].trim() == ""){				
@@ -100,8 +100,9 @@ public class EditContact extends Activity implements OnClickListener{
 			String f9 	= (city.getText().toString().equals("") 		== true) 	? editContact.getCity() 		:	city.getText().toString();  
 			String f10	= (country.getText().toString().equals("") 		== true) 	? editContact.getCountry() 		:	country.getText().toString();  
 			String f11	= (dateOfBirth.getText().toString().equals("")	== true) 	? editContact.getDateOfBirth() 	:	dateOfBirth.getText().toString();  
-	
-			Contact updatedContact = new Contact(f1,f2,f3,f4,f5,f6,f7,f8,f9,f10,f11);
+			
+			String f12	= editContact.getPhoto();
+			Contact updatedContact = new Contact(f1,f2,f3,f4,f5,f6,f7,f8,f9,f10,f11,f12);
 			
 			dbHelper.updateData(updatedContact, rowNumber);	
 			onBackPressed();   

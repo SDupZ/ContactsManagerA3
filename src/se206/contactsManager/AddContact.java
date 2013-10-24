@@ -63,8 +63,9 @@ public class AddContact extends Activity implements OnClickListener{
 			String f9 	= (city.getText().toString().trim().equals("") 		== true) 		? null	:	city.getText().toString();  
 			String f10	= (country.getText().toString().trim().equals("") 		== true) 	? null	:	country.getText().toString();  
 			String f11	= (dateOfBirth.getText().toString().trim().equals("")	== true) 	? null	:	dateOfBirth.getText().toString();  
-	
-			Contact newContact = new Contact(f1,f2,f3,f4,f5,f6,f7,f8,f9,f10,f11);
+			String f12	= null;
+			
+			Contact newContact = new Contact(f1,f2,f3,f4,f5,f6,f7,f8,f9,f10,f11, f12);
 			
 			dbHelper.insertData(newContact);
         	onBackPressed();      	

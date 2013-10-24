@@ -6,8 +6,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -47,7 +45,7 @@ public class MainActivity extends Activity{
     public void onResume(){
     	super.onResume();
     	if (listAdapter != null){    		
-    		//new updateData().execute();
+    		new updateData().execute();
     	}
     }
 
@@ -98,11 +96,8 @@ public class MainActivity extends Activity{
 			
 			String text = "" 	+ cursor.getString(cursor.getColumnIndex(cursor.getColumnName(ContactsDatabaseHelper.COLUMN_FIRSTNAME))) + " "
 								+ cursor.getString(cursor.getColumnIndex(cursor.getColumnName(ContactsDatabaseHelper.COLUMN_LASTNAME)));
-					
-			
-			Bitmap img = BitmapFactory.decodeResource(context.getResources(), R.drawable.dummyphoto);
-			photo.setImageBitmap(img);
-			
+						
+			photo.setImageDrawable(getResources().getDrawable(R.drawable.dummyphoto));
 			photo.setAdjustViewBounds(true);
 			photo.setMaxHeight(100);			
 			photo.setMaxWidth(100);
