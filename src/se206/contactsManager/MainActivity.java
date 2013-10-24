@@ -10,16 +10,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.BitmapFactory;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.CursorAdapter;
 import android.widget.ImageView;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.AdapterView;
 import android.widget.TextView;
@@ -27,7 +24,7 @@ import android.widget.TextView;
 public class MainActivity extends Activity{
 	private ListView contacts_listview;
 	private ContactsDatabaseHelper dbHelper;
-	private ArrayAdapter listAdapter;
+	private ArrayAdapter<Contact> listAdapter;
 	private List<Contact> contactsList;
 
     @Override
@@ -110,7 +107,7 @@ public class MainActivity extends Activity{
     }
     //**********************************************************************************************************************************
   	// 	Used to adapt the database to the listview on the main screen.
-    //	
+    //	First the data is put into an array and then adapted to then screen
   	//**********************************************************************************************************************************
 	private class CustomListAdapter extends ArrayAdapter<Contact>{
 		private Context context;
@@ -145,8 +142,7 @@ public class MainActivity extends Activity{
 			
 			return view;
 		}
-	}
-    
+	}    
     //**********************************************************************************************************************************
   	// 	Used to get data from database in new thread.
     //	This is called when data has been changed in the database and needs to be retrieved.
