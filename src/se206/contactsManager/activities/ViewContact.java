@@ -16,13 +16,20 @@ import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+/**
+ * This class view contact activity which is used to display details about a contact.
+ * From here a user can also edit or delete the contact. Or return to the main screen.
+ * 
+ * @author 	Simon du Preez 	
+ * 			5562045
+ * 			sdup571
+ */
 public class ViewContact extends Activity {
 	
-	private ContactsDatabaseHelper dbHelper;
-	private Contact viewContact;
-	private int rowNumber;
+	private Contact viewContact;					//The current contact that is being view.
+	private int rowNumber;							//The position of the contact in the contacts array.
 	
-	private ImageView viewContactPhoto;
+	private ImageView viewContactPhoto;				//For displaying the photo of the current contact.
 	
 	private TextView viewContactFirstname; 	
 	private TextView viewContactLastname; 	
@@ -36,8 +43,10 @@ public class ViewContact extends Activity {
 	private TextView viewContactCountry; 	
 	private TextView viewContactDateOfBirth; 
 	
+	private ContactsDatabaseHelper dbHelper;
+	
 	//-------------------------------------------------------------------------------------------------------------------------
-	// On Create
+	// On Create. Initialises this activity.
 	//-------------------------------------------------------------------------------------------------------------------------
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -46,9 +55,8 @@ public class ViewContact extends Activity {
 		setContentView(R.layout.activity_view_contact);
 		
 		dbHelper = ContactsDatabaseHelper.getHelper(ViewContact.this); 
-		int clickedViewPosition = (Integer)this.getIntent().getExtras().get("clickedViewPosition");
 		
-		rowNumber = clickedViewPosition;
+		rowNumber = (Integer)this.getIntent().getExtras().get("clickedViewPosition");			//Get the rownumber from previous activity.	
 		
 		viewContactFirstname 		= (TextView)findViewById(R.id.view_contact_firstname);
 		viewContactLastname 		= (TextView)findViewById(R.id.view_contact_lastname);
@@ -63,60 +71,9 @@ public class ViewContact extends Activity {
 		viewContactDateOfBirth 		= (TextView)findViewById(R.id.view_contact_dateofbirth);		
 		viewContactPhoto = (ImageView)findViewById(R.id.view_contact_photo);
 		
-		updateView();		
+		updateView();						//Helper method to populate the view with all the details.
 	} 
 	
-	//-------------------------------------------------------------------------------------------------------------------------
-	protected void onResume(){
-		super.onResume();
-		updateView();
-	}
-	
-	//-------------------------------------------------------------------------------------------------------------------------
-	public boolean onOptionsItemSelected(MenuItem item) {
-        
-		//Edit Contact Button Pushed
-        if (item.getItemId() == R.id.edit_contact_button){        
-        	Intent intent = new Intent(ViewContact.this, EditContact.class);
-        	intent.putExtra("contact", viewContact);
-        	intent.putExtra("rowNumber", rowNumber);
-	    	startActivity(intent);		
-	    	
-	    //Delete Contact Button Pushed
-        }else if (item.getItemId() == R.id.delete_contact_button){
-        	AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(ViewContact.this);
-        	
-        	dialogBuilder.setTitle("Delete contact?");
-        	dialogBuilder.setMessage("This contact will be removed.");
-        	
-        	dialogBuilder.setNegativeButton("Cancel", null);
-        	dialogBuilder.setPositiveButton("Delete", new DialogInterface.OnClickListener(){
-        		
-        		@Override
-        		public void onClick(DialogInterface arg0, int arg1){
-
-        			MyContacts.getMyContacts().getContactsList().remove(rowNumber);
-        			new AsyncTask<Void, Void,Void>(){
-        		    	@Override
-        		    	protected Void doInBackground(Void...voids){
-        		    		dbHelper.deleteContact(viewContact);
-        		    		return null;
-        		    	}    	
-        		    }.execute();
-        			onBackPressed();
-        		}
-        	});
-        	dialogBuilder.setCancelable(true);        	
-        	dialogBuilder.create().show();
-        	
-        //Back Contact Button Pushed
-        }else if (item.getItemId() == R.id.back_contact_button){
-        	onBackPressed(); 
-        }
-        return super.onOptionsItemSelected(item);
-    }
-	
-	//-------------------------------------------------------------------------------------------------------------------------
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
@@ -124,11 +81,23 @@ public class ViewContact extends Activity {
 		return true;
 	}
 	
+	/**
+	 * On resume method. Calls update view incase anything has changed. eg user presses edit and comes back to this screen.
+	 */
+	protected void onResume(){
+		super.onResume();
+		updateView();
+	}
+	
 	//-------------------------------------------------------------------------------------------------------------------------
-	// This method just updates the view page with updated information.
+	// Update View  Method
 	//-------------------------------------------------------------------------------------------------------------------------	
+	/**
+	 * This method is called whenever data has changed so that the most up to date information is shown to the user
+	 * about the contact.
+	 */
 	public void updateView(){
-		viewContact = MyContacts.getMyContacts().getContactsList().get(rowNumber);
+		viewContact = MyContacts.getMyContacts().getContactsList().get(rowNumber);		//Get the contact from the position.
 		
 		viewContactFirstname.setText(viewContact.getFirstName());
 		viewContactLastname.setText(viewContact.getLastName());
@@ -141,12 +110,55 @@ public class ViewContact extends Activity {
 		viewContactCity.setText(viewContact.getCity());
 		viewContactCountry.setText(viewContact.getCountry());
 		viewContactDateOfBirth.setText(viewContact.getDateOfBirth());
+		
 		if(viewContact.getPhoto() == null || BitmapFactory.decodeFile(viewContact.getPhoto()) == null){
 			viewContactPhoto.setImageDrawable(getResources().getDrawable(R.drawable.dummyphoto));
 		}else{
 			viewContactPhoto.setImageBitmap(BitmapFactory.decodeFile(viewContact.getPhoto()));
 		}
 	}	
+	
+	//-------------------------------------------------------------------------------------------------------------------------
+	// Listener for the menu buttons. Edit contact, delete or back.
+	//-------------------------------------------------------------------------------------------------------------------------
+	public boolean onOptionsItemSelected(MenuItem item) {        
+		
+        if (item.getItemId() == R.id.edit_contact_button){        						//Edit Contact Button Pushed
+        	Intent intent = new Intent(ViewContact.this, EditContact.class);	
+        	intent.putExtra("contact", viewContact);
+        	intent.putExtra("rowNumber", rowNumber);
+	    	startActivity(intent);		
+	    
+        }else if (item.getItemId() == R.id.delete_contact_button){						//Delete Contact Button Pushed
+        	
+        	AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(ViewContact.this);       	
+        	dialogBuilder.setTitle("Delete contact?");
+        	dialogBuilder.setMessage("This contact will be removed.");        	
+        	dialogBuilder.setNegativeButton("Cancel", null);
+        	dialogBuilder.setPositiveButton("Delete", new DialogInterface.OnClickListener(){        		
+        		@Override
+        		public void onClick(DialogInterface arg0, int arg1){
+        			MyContacts.getMyContacts().getContactsList().remove(rowNumber);		//Remove contact from contactslist
+        			new AsyncTask<Void, Void,Void>(){									
+        		    	@Override
+        		    	protected Void doInBackground(Void...voids){
+        		    		dbHelper.deleteContact(viewContact);		//Delete contact from database in background. This causes 
+        		    		return null;								//a delay if not done in the background.
+        		    	}    	
+        		    }.execute();
+        			onBackPressed();
+        		}
+        	});
+        	dialogBuilder.setCancelable(true);        	
+        	dialogBuilder.create().show();
+        	
+        }else if (item.getItemId() == R.id.back_contact_button){						//Back Contact Button Pushed
+        	onBackPressed(); 
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+	
 	
 	
 
