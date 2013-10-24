@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">ContactsManagerA3</string>
+    <string name="app_name">SDuPz ContactsManager</string>
     <string name="action_settings">Settings</string>
     <string name="add_contact">Add Contact</string>
     <string name="title_activity_add_contact">AddContact</string>
@@ -14,7 +14,6 @@
     <string name="hello_world">Hello world!</string>
     
     <string name="delete_contact">Delete</string>
-    <string name="title_activity_main_activityasdf">MainActivityasdf</string>
     <string name="work_phone_hint">Work Phone</string>
     <string name="email_address_hint">Email Address</string>
     <string name="photo_desc">Photo for current contact</string>

@@ -3,9 +3,6 @@ package se206.contactsManager.activities;
 import se206.contactsManager.Contact;
 import se206.contactsManager.MyContacts;
 import se206.contactsManager.R;
-import se206.contactsManager.R.id;
-import se206.contactsManager.R.layout;
-import se206.contactsManager.R.menu;
 import se206.contactsManager.database.ContactsDatabaseHelper;
 import android.net.Uri;
 import android.os.Bundle;
@@ -83,19 +80,14 @@ public class AddContact extends Activity implements OnClickListener{
 			String f12	= photoPath == null ? null : photoPath;
 			
 			final Contact newContact = new Contact(f1,f2,f3,f4,f5,f6,f7,f8,f9,f10,f11,f12);
-			
-			
-			
 			dbHelper.insertData(newContact);
-			
 			String query = "SELECT ROWID from "+ ContactsDatabaseHelper.TABLE_NAME +" order by ROWID DESC limit 1";			
 			Cursor c = dbHelper.getReadableDatabase().rawQuery(query, null);
 			long lastId = -1;
 			if (c != null && c.moveToFirst()) {
-			    lastId = c.getLong(0); //The 0 is the column index, we only have 1 column, so the index is 0
+			    lastId = c.getLong(0);
 			}
-			newContact.setID(lastId);
-			
+			newContact.setID(lastId);			
 			MyContacts.getMyContacts().getContactsList().add(newContact);
 			
         	onBackPressed();      	

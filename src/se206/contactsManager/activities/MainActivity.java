@@ -6,10 +6,6 @@ import java.util.List;
 import se206.contactsManager.Contact;
 import se206.contactsManager.MyContacts;
 import se206.contactsManager.R;
-import se206.contactsManager.R.drawable;
-import se206.contactsManager.R.id;
-import se206.contactsManager.R.layout;
-import se206.contactsManager.R.menu;
 import se206.contactsManager.database.ContactsDatabaseHelper;
 
 import android.os.Bundle;

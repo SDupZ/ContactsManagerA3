@@ -5,10 +5,6 @@ import java.util.List;
 import se206.contactsManager.Contact;
 import se206.contactsManager.MyContacts;
 import se206.contactsManager.R;
-import se206.contactsManager.R.drawable;
-import se206.contactsManager.R.id;
-import se206.contactsManager.R.layout;
-import se206.contactsManager.R.menu;
 import se206.contactsManager.database.ContactsDatabaseHelper;
 
 import android.net.Uri;
@@ -104,17 +100,10 @@ public class EditContact extends Activity implements OnClickListener{
 				editContact.getCountry(),
 				editContact.getDateOfBirth()
 			};
-		String[] fieldValues = {"\"First Name\"", "\"Last Name\"", "\"Mobile Phone\"", "\"Home Phone\"", "\"Work Phone\"", "\"Email Address\"",
-				"\"Address (Line 1)\"", "\"Address (Line 2)\"", "\"City\"", "\"Country\"", "\"Date of Birth\""};
-		
 		for( int i = 0; i< editTextFields.length; i++){
-			String hint = "";
-			if (contactDetails[i] == null || contactDetails[i].trim() == ""){				
-				hint = fieldValues[i];
-			}else{
-				hint = contactDetails[i];
+			if (!(contactDetails[i] == null || contactDetails[i].trim() == "")){				
+				editTextFields[i].setText(contactDetails[i]);
 			}
-			editTextFields[i].setHint(hint);
 		}
 	}
 	
