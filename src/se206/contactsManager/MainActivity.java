@@ -23,6 +23,7 @@ public class MainActivity extends Activity{
 	private ContactsDatabaseHelper dbHelper;
 	private CursorAdapter listAdapter;
 	
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);        
@@ -42,6 +43,7 @@ public class MainActivity extends Activity{
         return true;
     } 
     
+
     @Override
     public void onResume(){
     	super.onResume();
@@ -72,7 +74,8 @@ public class MainActivity extends Activity{
     }
     
 	//**********************************************************************************************************************************
-	// Used to adapt the database to the listview on the main screen.
+	// 	Used to adapt the database to the listview on the main screen.
+    //	
 	//**********************************************************************************************************************************
     private class CustomCursorAdapter extends CursorAdapter{
 		public CustomCursorAdapter(Context context, Cursor c){
@@ -115,7 +118,8 @@ public class MainActivity extends Activity{
     }
     
     //**********************************************************************************************************************************
-  	// Used to get data from database in new thread.
+  	// 	Used to get data from database in new thread.
+    //	This is called when data has been changed in the database and needs to be retrieved.
   	//**********************************************************************************************************************************
     private class updateData extends AsyncTask<Void, Integer, Cursor>{
     	protected Cursor doInBackground(Void...voids){
