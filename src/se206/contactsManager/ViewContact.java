@@ -72,8 +72,7 @@ public class ViewContact extends Activity {
 		viewContactCity.setText(viewContact.getCity());
 		viewContactCountry.setText(viewContact.getCountry());
 		viewContactDateOfBirth.setText(viewContact.getDateOfBirth());
-		
-		if(viewContact.getPhoto() == null){
+		if(viewContact.getPhoto() == null || BitmapFactory.decodeFile(viewContact.getPhoto()) == null){
 			viewContactPhoto.setImageDrawable(getResources().getDrawable(R.drawable.dummyphoto));
 		}else{
 			viewContactPhoto.setImageBitmap(BitmapFactory.decodeFile(viewContact.getPhoto()));

@@ -1,5 +1,7 @@
 package se206.contactsManager;
 
+import java.io.FileNotFoundException;
+
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -55,10 +57,10 @@ public class EditContact extends Activity implements OnClickListener{
 		photo = (ImageView)findViewById(R.id.edit_contact_image_view);
 		photo.setOnClickListener(this);
 		photoPath = editContact.getPhoto();
-		if(photoPath == null){
+		if(photoPath == null || BitmapFactory.decodeFile(photoPath) == null){
 			photo.setImageDrawable(getResources().getDrawable(R.drawable.dummyphoto));
 		}else{
-			photo.setImageBitmap(BitmapFactory.decodeFile(photoPath));
+				photo.setImageBitmap(BitmapFactory.decodeFile(photoPath));
 		}
 		
 		firstName   	=  (EditText)findViewById(R.id.edit_first_name);
@@ -147,9 +149,16 @@ public class EditContact extends Activity implements OnClickListener{
         			startActivityForResult(i, RESULT_LOAD_IMAGE);
         		}
         	});
-        	dialogBuilder.setNegativeButton("Canel", null);
+        	dialogBuilder.setNegativeButton("Restore Default Avatar", new DialogInterface.OnClickListener() {
+				
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					photoPath = null;
+					photo.setImageDrawable(getResources().getDrawable(R.drawable.dummyphoto));
+				}
+			});
         	dialogBuilder.setCancelable(true);
-        	
+        	dialogBuilder.setMessage("(Tap outside box to cancel)");
         	dialogBuilder.create().show();
 		}
 	}

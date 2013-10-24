@@ -99,7 +99,7 @@ public class MainActivity extends Activity{
 								+ cursor.getString(cursor.getColumnIndex(cursor.getColumnName(ContactsDatabaseHelper.COLUMN_LASTNAME)));
 			String photoPath = cursor.getString(cursor.getColumnIndex(cursor.getColumnName(ContactsDatabaseHelper.COLUMN_PHOTO)));
 			
-			if(photoPath == null){
+			if(photoPath == null || BitmapFactory.decodeFile(photoPath) == null){
 				photo.setImageDrawable(getResources().getDrawable(R.drawable.dummyphoto));
 			}else{
 				photo.setImageBitmap(BitmapFactory.decodeFile(photoPath));
