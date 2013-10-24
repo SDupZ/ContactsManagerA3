@@ -1,8 +1,6 @@
 package se206.contactsManager;
 
 import java.util.Comparator;
-import java.util.Locale;
-
 import android.os.Parcel;
 import android.os.Parcelable;
 
