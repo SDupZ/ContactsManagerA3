@@ -103,7 +103,7 @@ public class EditContact extends Activity implements OnClickListener{
 	
 			Contact updatedContact = new Contact(f1,f2,f3,f4,f5,f6,f7,f8,f9,f10,f11);
 			
-			dbHelper.updateData(updatedContact, rowNumber);		
+			dbHelper.updateData(updatedContact, rowNumber);	
 			onBackPressed();   
 		}        
         return super.onOptionsItemSelected(item);

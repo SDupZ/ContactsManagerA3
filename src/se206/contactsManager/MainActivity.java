@@ -1,5 +1,6 @@
 package se206.contactsManager;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Context;
@@ -45,11 +46,11 @@ public class MainActivity extends Activity{
     @Override
     public void onResume(){
     	super.onResume();
-    	if (listAdapter != null){
-    		listAdapter.changeCursor(dbHelper.getAllData());
-    		
+    	if (listAdapter != null){    		
+    		//new updateData().execute();
     	}
     }
+
     private void setupContactListView(){ 	
     	listAdapter = new CustomCursorAdapter(MainActivity.this, dbHelper.getAllData());
     	contacts_listview.setAdapter(listAdapter);    	
@@ -109,6 +110,19 @@ public class MainActivity extends Activity{
 			//Set the text for each view.
 			name.setText(text);
 		}
+    }
+    
+    //**********************************************************************************************************************************
+  	// Used to get data from database in new thread.
+  	//**********************************************************************************************************************************
+    private class updateData extends AsyncTask<Void, Integer, Cursor>{
+    	protected Cursor doInBackground(Void...voids){
+    		return dbHelper.getAllData();
+    	}
+    	
+    	protected void onPostExecute(Cursor c){
+    		listAdapter.changeCursor(c);
+    	}
     }
 	
 }
