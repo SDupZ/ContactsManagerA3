@@ -12,14 +12,12 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.BitmapFactory;
-
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.EditText;
-import android.widget.Toast;
 
 public class EditContact extends Activity implements OnClickListener{
 	private ImageView photo;
@@ -131,6 +129,7 @@ public class EditContact extends Activity implements OnClickListener{
 			String f12	= photoPath;
 			
 			updatedContact = new Contact(f1,f2,f3,f4,f5,f6,f7,f8,f9,f10,f11,f12);
+			updatedContact.setID(editContact.getID());
 			
 			List<Contact> contacts = MyContacts.getMyContacts().getContactsList();
 			contacts.remove(rowNumber);

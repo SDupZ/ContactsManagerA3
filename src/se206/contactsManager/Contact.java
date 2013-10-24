@@ -6,7 +6,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class Contact implements Parcelable {
-	private int id;
+	private long id;
 	private String firstName;
 	private String lastName;
 	private String mobilePhone;
@@ -93,6 +93,7 @@ public class Contact implements Parcelable {
 		//Just need to write each field into the parcel.
 		//When we read from the parcel, they will come
 		//back in the same order.
+		dest.writeLong(id);
 		dest.writeString(firstName);   
 		dest.writeString(lastName);    
 		dest.writeString(mobilePhone); 
@@ -108,18 +109,19 @@ public class Contact implements Parcelable {
 	}
 	
 	private void readFromParcel (Parcel in){
-		firstName		=	in.readString();     
-		lastName       	=	in.readString();  
-		mobilePhone    	=	in.readString();  
-		homePhone      	=	in.readString();  
-		workPhone      	=	in.readString();  
-		emailAddress   	=	in.readString();  
-		addressLine1   	=	in.readString();  
-		addressLine2   	=	in.readString();  
-		city           	=	in.readString();  
-		country        	=	in.readString();  
-		dateOfBirth    	=	in.readString(); 
-		photo			= 	in.readString();
+		this.id 				= 	in.readLong();
+		this.firstName			=	in.readString();     
+		this.lastName       	=	in.readString();  
+		this.mobilePhone    	=	in.readString();  
+		this.homePhone      	=	in.readString();  
+		this.workPhone      	=	in.readString();  
+		this.emailAddress   	=	in.readString();  
+		this.addressLine1   	=	in.readString();  
+		this.addressLine2   	=	in.readString();  
+		this.city           	=	in.readString();  
+		this.country        	=	in.readString();  
+		this.dateOfBirth    	=	in.readString(); 
+		this.photo				= 	in.readString();
 	}
 	
 	public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
@@ -173,11 +175,11 @@ public class Contact implements Parcelable {
 	public String getPhoto(){
 		return photo;
 	}
-	public int getID(){
+	public long getID(){
 		return id;
 	}
 	
-	public void setID(int id){
+	public void setID(long id){
 		this.id = id;
 	}
 

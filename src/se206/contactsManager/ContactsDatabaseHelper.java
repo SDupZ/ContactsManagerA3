@@ -13,13 +13,17 @@ public class ContactsDatabaseHelper extends SQLiteOpenHelper{
 	public static final int COLUMN_LASTNAME = 2;
 	public static final int COLUMN_PHOTO = 12;
 	
+	public static final String DATABASE_NAME = "ContactsManager.db";
 	// Database version
 	public static final int DATABASE_VERSION = 1;
+	
+	
 	
 	// Contacts Table Name
 	public static final String TABLE_NAME = "ContactsTable";
 	
 	// Contacts Table Columns
+	private static final String CONTACTS_ID				= "id";
 	private static final String CONTACTS_FIRSTNAME 		= "firstname";
 	private static final String CONTACTS_LASTNAME	 	= "lastname";
 	private static final String CONTACTS_MOBILEPHONE	= "mobilephone";
@@ -35,6 +39,7 @@ public class ContactsDatabaseHelper extends SQLiteOpenHelper{
 	
 	//SQL String for creating contacts table.
 	private static final String CREATE_CONTACTS_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " ("
+			+ CONTACTS_ID				+ " INTEGER PRIMARY KEY AUTOINCREMENT,"
 			+ CONTACTS_FIRSTNAME 		+ " TEXT,"
 			+ CONTACTS_LASTNAME			+ " TEXT,"
 			+ CONTACTS_MOBILEPHONE		+ " TEXT,"
@@ -62,7 +67,7 @@ public class ContactsDatabaseHelper extends SQLiteOpenHelper{
 	}
 	//Private constructor to ensure a new instance cannot be made by anything other than this class.
 	private ContactsDatabaseHelper(Context context){
-		super(context, TABLE_NAME, null, DATABASE_VERSION);		
+		super(context, DATABASE_NAME, null, DATABASE_VERSION);		
 	}
 	//-------------------------------------------------------------------------------------------------------------------------
 	
@@ -110,13 +115,13 @@ public class ContactsDatabaseHelper extends SQLiteOpenHelper{
 	public void updateData(Contact contact){
 		ContentValues contentValues = getContentValues(contact);
 		SQLiteDatabase db = this.getWritableDatabase();
-		db.update(ContactsDatabaseHelper.TABLE_NAME, contentValues,"rowid == " + (contact.getID()+1), null);	
+		db.update(ContactsDatabaseHelper.TABLE_NAME, contentValues,CONTACTS_ID+"="+ contact.getID(), null);	
 		db.close();
 	}
 	
 	public void deleteContact(Contact contact){
 		SQLiteDatabase db = this.getWritableDatabase();
-		db.delete(TABLE_NAME, "rowid == "+ contact.getID(), null);
+		db.delete(TABLE_NAME, CONTACTS_ID+"="+ contact.getID(), null);
 		db.close();
 	}
 }                                                

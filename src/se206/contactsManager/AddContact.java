@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.BitmapFactory;
 
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -60,8 +61,10 @@ public class AddContact extends Activity implements OnClickListener{
 	}
 	
 	public boolean onOptionsItemSelected(MenuItem item) {
+		
         // Handle presses on the action bar items
         if (item.getItemId() == R.id.done_button){
+        	
         	String f1 	= (firstName.getText().toString().trim().equals("") 	== true) 	? null 	:	firstName.getText().toString();
 			String f2 	= (lastName.getText().toString().trim().equals("") 	== true) 		? null 	:	lastName.getText().toString();
 			String f3	= (mobilePhone.getText().toString().trim().equals("") 	== true) 	? null 	:	mobilePhone.getText().toString();
@@ -75,17 +78,22 @@ public class AddContact extends Activity implements OnClickListener{
 			String f11	= (dateOfBirth.getText().toString().trim().equals("")	== true) 	? null	:	dateOfBirth.getText().toString();  
 			String f12	= photoPath == null ? null : photoPath;
 			
-			final Contact newContact = new Contact(f1,f2,f3,f4,f5,f6,f7,f8,f9,f10,f11, f12);
+			final Contact newContact = new Contact(f1,f2,f3,f4,f5,f6,f7,f8,f9,f10,f11,f12);
+			
+			
+			
+			dbHelper.insertData(newContact);
+			
+			String query = "SELECT ROWID from "+ ContactsDatabaseHelper.TABLE_NAME +" order by ROWID DESC limit 1";			
+			Cursor c = dbHelper.getReadableDatabase().rawQuery(query, null);
+			long lastId = -1;
+			if (c != null && c.moveToFirst()) {
+			    lastId = c.getLong(0); //The 0 is the column index, we only have 1 column, so the index is 0
+			}
+			newContact.setID(lastId);
 			
 			MyContacts.getMyContacts().getContactsList().add(newContact);
 			
-			new AsyncTask<Void, Void,Void>(){
-		    	@Override
-		    	protected Void doInBackground(Void...voids){
-		    		dbHelper.insertData(newContact);
-		    		return null;
-		    	}    	
-		    }.execute();			
         	onBackPressed();      	
         }
         return super.onOptionsItemSelected(item);

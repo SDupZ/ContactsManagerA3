@@ -11,6 +11,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.BitmapFactory;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -39,7 +40,8 @@ public class MainActivity extends Activity{
         
         setContentView(R.layout.activity_main);
         
-        dbHelper = ContactsDatabaseHelper.getHelper(MainActivity.this);        
+        dbHelper = ContactsDatabaseHelper.getHelper(MainActivity.this);
+        Log.d("Something", "test");
         contactsList = new ArrayList<Contact>(); 
         contacts_listview = (ListView)findViewById(R.id.contacts_listview);    
         globalContactsList = MyContacts.getMyContacts();
@@ -115,31 +117,30 @@ public class MainActivity extends Activity{
     //This should only have to be called once. -At the initial load of the application.
     private void populateContactListFromDatabase(){
     	Cursor c = dbHelper.getAllData();
-    	c.moveToFirst();
-    	do{
-    		Contact newContact = new Contact(
-    				c.getString(c.getColumnIndex(c.getColumnName(1))),
-    				c.getString(c.getColumnIndex(c.getColumnName(2))),
-    				c.getString(c.getColumnIndex(c.getColumnName(3))),
-    				c.getString(c.getColumnIndex(c.getColumnName(4))),
-    				c.getString(c.getColumnIndex(c.getColumnName(5))),
-    				c.getString(c.getColumnIndex(c.getColumnName(6))),    				
-    				c.getString(c.getColumnIndex(c.getColumnName(7))),
-    				c.getString(c.getColumnIndex(c.getColumnName(8))),
-    				c.getString(c.getColumnIndex(c.getColumnName(9))),
-    				c.getString(c.getColumnIndex(c.getColumnName(10))),
-    				c.getString(c.getColumnIndex(c.getColumnName(11))),
-    				c.getString(c.getColumnIndex(c.getColumnName(12)))    	
-    				
-    				);    		
-    		
-    		newContact.setID(Integer.parseInt(c.getString(c.getColumnIndex(c.getColumnName(0)))));
-    		contactsList.add(newContact);
-    		
-    	}while(c.moveToNext());
-    	
+    	if(c.moveToFirst()){
+	    	do{
+	    		Contact newContact = new Contact(
+	    				c.getString(c.getColumnIndex(c.getColumnName(2))),
+	    				c.getString(c.getColumnIndex(c.getColumnName(3))),
+	    				c.getString(c.getColumnIndex(c.getColumnName(4))),
+	    				c.getString(c.getColumnIndex(c.getColumnName(5))),
+	    				c.getString(c.getColumnIndex(c.getColumnName(6))),
+	    				c.getString(c.getColumnIndex(c.getColumnName(7))),    				
+	    				c.getString(c.getColumnIndex(c.getColumnName(8))),
+	    				c.getString(c.getColumnIndex(c.getColumnName(9))),
+	    				c.getString(c.getColumnIndex(c.getColumnName(10))),
+	    				c.getString(c.getColumnIndex(c.getColumnName(11))),
+	    				c.getString(c.getColumnIndex(c.getColumnName(12))),
+	    				c.getString(c.getColumnIndex(c.getColumnName(13)))
+	    				);    		
+	    		
+	    		newContact.setID(Integer.parseInt(c.getString(c.getColumnIndex(c.getColumnName(1)))));	    		
+	    		contactsList.add(newContact);
+	    		
+	    	}while(c.moveToNext());
+    	}
     	globalContactsList.updateContactsList(contactsList);
-    	//MyContacts.getMyContacts().reorderList(0);
+    	MyContacts.getMyContacts().reorderList(0);
     }
     //**********************************************************************************************************************************
   	// 	Used to adapt the database to the listview on the main screen.
