@@ -156,25 +156,27 @@ public class AddContact extends Activity implements OnClickListener{
 	 */
 	@Override
 	public void onClick(View v) {
-		if (v.equals(photo)){
+		
+		if (v.equals(photo)){			
 			AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(AddContact.this);
-        	
         	dialogBuilder.setTitle("Choose a picture");
         	dialogBuilder.setNegativeButton("Cancel", null);
         	dialogBuilder.setPositiveButton("Choose a Picture", new DialogInterface.OnClickListener(){        		
         		@Override
         		public void onClick(DialogInterface arg0, int arg1){
-        			Intent i = new Intent(
-        					Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);        					 
+        			Intent i = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);        					 
         			startActivityForResult(i, RESULT_LOAD_IMAGE);
         		}
         	});
-        	dialogBuilder.setCancelable(true);
+        	dialogBuilder.setCancelable(true);			//Allow the user to cancel the dialog by touching outside the box.
         	
         	dialogBuilder.create().show();
 		}
 	}
 	
+	/**
+	 *	Used to obtain the image path from the gallery.
+	 */
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
          
@@ -182,8 +184,7 @@ public class AddContact extends Activity implements OnClickListener{
             Uri selectedImage = data.getData();
             String[] filePathColumn = { MediaStore.Images.Media.DATA };
  
-            Cursor cursor = getContentResolver().query(selectedImage,
-                    filePathColumn, null, null, null);
+            Cursor cursor = getContentResolver().query(selectedImage,filePathColumn, null, null, null);
             cursor.moveToFirst();
  
             int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
@@ -191,7 +192,7 @@ public class AddContact extends Activity implements OnClickListener{
             cursor.close();
             
             photoPath = picturePath;
-            photo.setImageBitmap(BitmapFactory.decodeFile(picturePath));
+            photo.setImageBitmap(BitmapFactory.decodeFile(picturePath));			//Update photo to make it look nice.
         }
     }
 }

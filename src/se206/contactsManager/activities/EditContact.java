@@ -24,13 +24,24 @@ import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.EditText;
 
+/**
+ * 	This class is the edit contact activity. It is used to edit contact details for a contact.
+ * 	It uses a very similar gui as the add contact, however this is a new class so for future
+ * 	developments it could be changed easily.	
+ * 
+ * @author 	Simon du Preez 	
+ * 			5562045
+ * 			sdup571
+ */
 public class EditContact extends Activity implements OnClickListener{
 	private ImageView photo;
 	private String photoPath;
-	private Contact editContact;
-	private Contact updatedContact;
+	
+	private Contact editContact;						//The inital contact that the user clicked on to edit.
+	private Contact updatedContact;						//The edited contact that needs to replace the old one.
+	
 	private ContactsDatabaseHelper dbHelper;
-	private int rowNumber;
+	private int rowNumber;								//Row number that corresponds to the position in the contactslist of the old contact.
 	
 	private EditText firstName;   
 	private EditText lastName;    
@@ -49,24 +60,29 @@ public class EditContact extends Activity implements OnClickListener{
 	private static int RESULT_LOAD_IMAGE = 1;
 	
 	//-------------------------------------------------------------------------------------------------------------------------
-	// On Create
+	// On Create method for edit Contact.
 	//-------------------------------------------------------------------------------------------------------------------------
+	/**
+	 * Initialises the edit contact activity with the old values and for any null values the edittext boxes
+	 * show hints.
+	 */
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
-		editContact = (Contact) this.getIntent().getExtras().get("contact");
-		rowNumber = (Integer) this.getIntent().getExtras().get("rowNumber");
-		
+		editContact = (Contact) this.getIntent().getExtras().get("contact");		//Get Contact to be edited from viewcontact screen.
+		rowNumber = (Integer) this.getIntent().getExtras().get("rowNumber");		//Also get the row number. This is why contact is 
+																					//parcelable.
 		setContentView(R.layout.activity_edit_contact);
 
 		dbHelper = ContactsDatabaseHelper.getHelper(EditContact.this);
 		
-		photo = (ImageView)findViewById(R.id.edit_contact_image_view);
-		photo.setOnClickListener(this);
+		photo = (ImageView)findViewById(R.id.edit_contact_image_view);				
+		photo.setOnClickListener(this);												//Allow photo to be changed. (Clickable)
 		photoPath = editContact.getPhoto();
-		if(photoPath == null || BitmapFactory.decodeFile(photoPath) == null){
-			photo.setImageDrawable(getResources().getDrawable(R.drawable.dummyphoto));
+		
+		if(photoPath == null || BitmapFactory.decodeFile(photoPath) == null){			//If this contact has a photo show it
+			photo.setImageDrawable(getResources().getDrawable(R.drawable.dummyphoto));	//otherwise show the dummyphoto.
 		}else{
 				photo.setImageBitmap(BitmapFactory.decodeFile(photoPath));
 		}
@@ -83,12 +99,11 @@ public class EditContact extends Activity implements OnClickListener{
 		country         =  (EditText)findViewById(R.id.edit_country);
 		dateOfBirth 	=  (EditText)findViewById(R.id.edit_dateofbirth);
 		
-		EditText[] fields = {firstName,lastName,mobilePhone,homePhone,workPhone,
-			    emailAddress,addressLine1,addressLine2,city,country,dateOfBirth};
+		EditText[] fields = {firstName,lastName,mobilePhone,homePhone,workPhone,emailAddress,addressLine1,addressLine2,city,country,dateOfBirth};
 		editTextFields = fields;
-		
-		String[] contactDetails = {
-				editContact.getFirstName(),
+
+		String[] contactDetails = {									//Get all the details that we already have.
+				editContact.getFirstName(),							//They can then be shown in the text fields.
 				editContact.getLastName(),
 				editContact.getMobilePhone(),
 				editContact.getHomePhone(),
@@ -102,16 +117,30 @@ public class EditContact extends Activity implements OnClickListener{
 			};
 		for( int i = 0; i< editTextFields.length; i++){
 			if (!(contactDetails[i] == null || contactDetails[i].trim() == "")){				
-				editTextFields[i].setText(contactDetails[i]);
+				editTextFields[i].setText(contactDetails[i]);						//Set text for appropriate fields.
 			}
 		}
 	}
 	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.edit_contact, menu);
+		return true;
+	}
+	
 	//-------------------------------------------------------------------------------------------------------------------------
+	// Done button Pressed. Need to save updated contact to database and contactslist.
+	//-------------------------------------------------------------------------------------------------------------------------
+	/**
+	 * 	This method is called when the an item on the menu is selected. We are interested in the done button only.
+	 * 	When the done button is pressed, an updated contact object is created. The old contact in the contacts list
+	 * 	is deleted and this one is inserted in its places. Once this is done we return to the viewcontact activity.
+	 * 	In the meantime the database is updated in a background thread. In this way, the gui is updated immediately
+	 * 	and lag from the database is avoided.
+	 */
 	public boolean onOptionsItemSelected(MenuItem item) {
-		
-		//Done Button Pushed
-		//Need to save to database and to MyContactsList.
+
 		if (item.getItemId() == R.id.done_button){
 			String f1 	= (firstName.getText().toString().equals("") 	== true) 	? editContact.getFirstName() 	:	firstName.getText().toString();
 			String f2 	= (lastName.getText().toString().equals("") 	== true) 	? editContact.getLastName() 	:	lastName.getText().toString();
@@ -126,17 +155,17 @@ public class EditContact extends Activity implements OnClickListener{
 			String f11	= (dateOfBirth.getText().toString().equals("")	== true) 	? editContact.getDateOfBirth() 	:	dateOfBirth.getText().toString();  
 			String f12	= photoPath;
 			
-			updatedContact = new Contact(f1,f2,f3,f4,f5,f6,f7,f8,f9,f10,f11,f12);
-			updatedContact.setID(editContact.getID());
+			updatedContact = new Contact(f1,f2,f3,f4,f5,f6,f7,f8,f9,f10,f11,f12);			//Create our updated contact.
+			updatedContact.setID(editContact.getID());										//Need to manually set the id to what is was before.
 			
 			List<Contact> contacts = MyContacts.getMyContacts().getContactsList();
-			contacts.remove(rowNumber);
-			contacts.add(rowNumber, updatedContact);			
+			contacts.remove(rowNumber);					
+			contacts.add(rowNumber, updatedContact);										//Replace old contact.		
 			
-			new AsyncTask<Void, Void,Void>(){
+			new AsyncTask<Void, Void,Void>(){	
 		    	@Override
 		    	protected Void doInBackground(Void...voids){
-		    		dbHelper.updateData(updatedContact);	
+		    		dbHelper.updateData(updatedContact);									//Create a background thread to update database.	
 		    		return null;
 		    	}    	
 		    }.execute();
@@ -146,14 +175,14 @@ public class EditContact extends Activity implements OnClickListener{
 	}
 	
 	//-------------------------------------------------------------------------------------------------------------------------
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.edit_contact, menu);
-		return true;
-	}
-
+	// Listener "onclick" method for the image view. Methods below are for choosing a photo.
 	//-------------------------------------------------------------------------------------------------------------------------
+	/**
+	 *	This method is the onClick method for the listener attached to the image view. When the image view is clicked
+	 *	the user is taken to the android gallery and allowed to choose a photo to set as the contact photo.
+	 *	Also the user has the option of "restore default avatar" which removes their picture and uses the default
+	 *	dummy avatar instead. To cancel you simply tap outside the box.
+	 */
 	@Override
 	public void onClick(View v) {
 		
@@ -180,7 +209,10 @@ public class EditContact extends Activity implements OnClickListener{
         	dialogBuilder.create().show();
 		}
 	}
-	//-------------------------------------------------------------------------------------------------------------------------
+	
+	/**
+	 *	Used to obtain the image path from the gallery.
+	 */
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
          
@@ -199,10 +231,5 @@ public class EditContact extends Activity implements OnClickListener{
             photoPath = picturePath;
             photo.setImageBitmap(BitmapFactory.decodeFile(picturePath));
        }
-    }
-    //**********************************************************************************************************************************
-  	// 	Used to write data into the database since this is a costly process.
-    //	This is called when data has been changed and the database needs to be updated.
-  	//**********************************************************************************************************************************
-    
+    }    
 }
