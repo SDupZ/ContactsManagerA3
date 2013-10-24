@@ -30,8 +30,10 @@ public class AddContact extends Activity implements OnClickListener{
 	private EditText  	city;        
 	private EditText  	country;     
 	private EditText 	dateOfBirth; 
-	
+	private static int RESULT_LOAD_IMAGE = 1;
 	private ContactsDatabaseHelper dbHelper;
+	
+	private String photoPath;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +42,7 @@ public class AddContact extends Activity implements OnClickListener{
 		
 		photo = (ImageView)findViewById(R.id.add_contact_image_view);
 		photo.setOnClickListener(this);
-		
+		photoPath = null;
 		firstName   	=  (EditText)findViewById(R.id.first_name);
 		lastName        =  (EditText)findViewById(R.id.last_name);
 		mobilePhone     =  (EditText)findViewById(R.id.mobile_phone);
@@ -70,7 +72,7 @@ public class AddContact extends Activity implements OnClickListener{
 			String f9 	= (city.getText().toString().trim().equals("") 		== true) 		? null	:	city.getText().toString();  
 			String f10	= (country.getText().toString().trim().equals("") 		== true) 	? null	:	country.getText().toString();  
 			String f11	= (dateOfBirth.getText().toString().trim().equals("")	== true) 	? null	:	dateOfBirth.getText().toString();  
-			String f12	= null;
+			String f12	= photoPath == null ? null : photoPath;
 			
 			Contact newContact = new Contact(f1,f2,f3,f4,f5,f6,f7,f8,f9,f10,f11, f12);
 			
@@ -92,11 +94,38 @@ public class AddContact extends Activity implements OnClickListener{
 			AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(AddContact.this);
         	
         	dialogBuilder.setTitle("Choose a picture");
-        	dialogBuilder.setNegativeButton("Choose a Picture", null);
-        	dialogBuilder.setPositiveButton("Take a photo", null);
+        	dialogBuilder.setNegativeButton("Cancel", null);
+        	dialogBuilder.setPositiveButton("Choose a Picture", new DialogInterface.OnClickListener(){        		
+        		@Override
+        		public void onClick(DialogInterface arg0, int arg1){
+        			Intent i = new Intent(
+        					Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);        					 
+        			startActivityForResult(i, RESULT_LOAD_IMAGE);
+        		}
+        	});
         	dialogBuilder.setCancelable(true);
         	
         	dialogBuilder.create().show();
 		}
 	}
+	
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+         
+        if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && null != data) {
+            Uri selectedImage = data.getData();
+            String[] filePathColumn = { MediaStore.Images.Media.DATA };
+ 
+            Cursor cursor = getContentResolver().query(selectedImage,
+                    filePathColumn, null, null, null);
+            cursor.moveToFirst();
+ 
+            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+            String picturePath = cursor.getString(columnIndex);
+            cursor.close();
+            
+            photoPath = picturePath;
+            photo.setImageBitmap(BitmapFactory.decodeFile(picturePath));
+        }
+    }
 }
