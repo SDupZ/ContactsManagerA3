@@ -49,7 +49,6 @@ public class MainActivity extends Activity{
         sortOrder = MyContacts.FIRSTNAME_ORDER;
         
         populateContactListFromDatabase();
-      //Setup ListView which displays contacts
         setupContactListView();
     }
   //-------------------------------------------------------------------------------------------------------------------------
@@ -106,6 +105,7 @@ public class MainActivity extends Activity{
         	dialogBuilder.setPositiveButton("Select", new DialogInterface.OnClickListener(){
         		public void onClick(DialogInterface dialog, int id){
         			int selectedPosition = ((AlertDialog)dialog).getListView().getCheckedItemPosition();
+        			
         			MyContacts.getMyContacts().reorderList(selectedPosition);
         			listAdapter.notifyDataSetChanged();
         		}
@@ -163,7 +163,13 @@ public class MainActivity extends Activity{
 			TextView name = (TextView)view.findViewById(R.id.contacts_listview_name);
 			ImageView photo = (ImageView)view.findViewById(R.id.contacts_listview_photo);
 			
-			String text = "" + contactsList.get(position).getFirstName() + " " + contactsList.get(position).getLastName();
+			String text = "";
+			if (contactsList.get(position).getFirstName() != null){
+				text += contactsList.get(position).getFirstName() + " ";
+			}
+			if (contactsList.get(position).getLastName() != null){
+				text += contactsList.get(position).getLastName();
+			}
 			String photoPath = contactsList.get(position).getPhoto();
 			
 			if(photoPath == null || BitmapFactory.decodeFile(photoPath) == null){
