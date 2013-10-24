@@ -4,6 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class Contact implements Parcelable {
+	private int id;
 	private String firstName;
 	private String lastName;
 	private String mobilePhone;
@@ -147,6 +148,13 @@ public class Contact implements Parcelable {
 	}
 	public String getPhoto(){
 		return photo;
+	}
+	public int getID(){
+		return id;
+	}
+	
+	public void setID(int id){
+		this.id = id;
 	}
 
 }
